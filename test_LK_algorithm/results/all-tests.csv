@@ -1,0 +1,197 @@
+graph,intervention,CI,p.value,adj.p.value,test
+New,none,"Akt _||_ Erk | Mek, PKA",0.6613129527804791,1,gcm
+New,none,"Akt _||_ JNK | PKA, PKC",0.575474286193747,1,gcm
+New,none,Akt _||_ PIP2 | PLCg,0.38439799235225247,1,gcm
+New,none,Akt _||_ PIP2 | PIP3,0.08974348952925237,1,gcm
+New,none,Akt _||_ PLCg | PIP3,0.4593027480640357,1,gcm
+New,none,Akt _||_ Raf | PKC,0.8290913874864647,1,gcm
+New,none,"Akt _||_ p38 | JNK, PKC",0.7139618968186132,1,gcm
+New,none,"Akt _||_ p38 | PKA, PKC",0.5654095969746278,1,gcm
+New,none,"Erk _||_ JNK | PKA, PKC",0.8508244562091257,1,gcm
+New,none,"Erk _||_ JNK | Akt, PKA, Raf",0.8243788513717041,1,gcm
+New,none,"Erk _||_ JNK | Mek, PKA",0.672747636563146,1,gcm
+New,none,Erk _||_ PIP2 | PLCg,0.8412663449904667,1,gcm
+New,none,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.48598279042363945,1,gcm
+New,none,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.1283848423133137,1,gcm
+New,none,"Erk _||_ PIP2 | Akt, PKA, PKC",0.5143499662330056,1,gcm
+New,none,"Erk _||_ PIP2 | Akt, PKA, Raf",0.42331538310677086,1,gcm
+New,none,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.32468458067578365,1,gcm
+New,none,"Erk _||_ PIP2 | Mek, PKA",0.18467583556874367,1,gcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.9302070414652286,1,gcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, PKC",0.3583832225601976,1,gcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, Raf",0.1421451657967181,1,gcm
+New,none,"Erk _||_ PIP3 | Mek, PKA",0.33105262009280434,1,gcm
+New,none,"Erk _||_ PKC | Akt, PLCg, Raf",0.8243603368096735,1,gcm
+New,none,"Erk _||_ PKC | Akt, PIP3, Raf",0.7862501160706601,1,gcm
+New,none,"Erk _||_ PKC | Akt, PKA, Raf",0.4220517258800859,1,gcm
+New,none,"Erk _||_ PKC | Akt, Mek, PLCg",0.998580197710467,1,gcm
+New,none,"Erk _||_ PKC | Akt, Mek, PIP3",0.2603613284607781,1,gcm
+New,none,"Erk _||_ PKC | Mek, PKA",0.24551289824559508,1,gcm
+New,none,"Erk _||_ PLCg | Akt, PIP3, PKC",0.09080199991246007,1,gcm
+New,none,"Erk _||_ PLCg | Akt, PIP3, Raf",0.014029675680074072,1,gcm
+New,none,"Erk _||_ PLCg | Akt, PKA, PKC",0.06736947453810838,1,gcm
+New,none,"Erk _||_ PLCg | Akt, PKA, Raf",0.010776452460375396,1,gcm
+New,none,"Erk _||_ PLCg | Akt, Mek, PIP3",0.03168311510395738,1,gcm
+New,none,"Erk _||_ PLCg | Mek, PKA",0.03716977667655519,1,gcm
+New,none,"Erk _||_ Raf | Akt, Mek, PKC",0.7724679741957883,1,gcm
+New,none,"Erk _||_ Raf | Akt, Mek, PLCg",0.851428176298131,1,gcm
+New,none,"Erk _||_ Raf | Akt, Mek, PIP3",0.7726725283708513,1,gcm
+New,none,"Erk _||_ Raf | Mek, PKA",0.5613646036113233,1,gcm
+New,none,"Erk _||_ p38 | JNK, PKC",0.8250191557442699,1,gcm
+New,none,"Erk _||_ p38 | PKA, PKC",0.43570414672942137,1,gcm
+New,none,"Erk _||_ p38 | Akt, PKA, Raf",0.8770540699148885,1,gcm
+New,none,"Erk _||_ p38 | Mek, PKA",0.5742649830936513,1,gcm
+New,none,"JNK _||_ Mek | Akt, Raf",0.5779160441858913,1,gcm
+New,none,"JNK _||_ Mek | Akt, PKC",0.762624544671286,1,gcm
+New,none,"JNK _||_ Mek | PKA, PKC",0.21289631590205516,1,gcm
+New,none,JNK _||_ PIP2 | PLCg,0.10068556396698303,1,gcm
+New,none,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.7653926778508802,1,gcm
+New,none,"JNK _||_ PIP2 | PKA, PKC",0.33459548935224914,1,gcm
+New,none,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.6799426600326708,1,gcm
+New,none,"JNK _||_ PIP3 | PKA, PKC",0.817061660763325,1,gcm
+New,none,"JNK _||_ PLCg | Akt, PIP3, PKC",0.43827336138907547,1,gcm
+New,none,"JNK _||_ PLCg | PKA, PKC",0.4500324512141275,1,gcm
+New,none,JNK _||_ Raf | PKC,0.08968714989239368,1,gcm
+New,none,Mek _||_ PIP2 | PLCg,0.036307022041745074,1,gcm
+New,none,"Mek _||_ PIP2 | Akt, PKC",0.9798028920101606,1,gcm
+New,none,"Mek _||_ PIP2 | Akt, Raf",0.10113267914133028,1,gcm
+New,none,"Mek _||_ PIP3 | Akt, PLCg",0.9308939371128144,1,gcm
+New,none,"Mek _||_ PIP3 | Akt, PKC",0.24860598758182229,1,gcm
+New,none,"Mek _||_ PIP3 | Akt, Raf",0.5963834551842034,1,gcm
+New,none,"Mek _||_ PKA | Akt, PIP3",0.3955791617215627,1,gcm
+New,none,"Mek _||_ PKA | Akt, PLCg",0.09887322852274671,1,gcm
+New,none,"Mek _||_ PKA | Akt, PKC",0.1668865430443025,1,gcm
+New,none,"Mek _||_ PKA | Akt, Raf",0.11991841924186841,1,gcm
+New,none,"Mek _||_ PKC | Akt, Raf",0.2331677084949232,1,gcm
+New,none,"Mek _||_ PLCg | Akt, PKC",0.6697939019426428,1,gcm
+New,none,"Mek _||_ PLCg | Akt, Raf",0.2996910679773882,1,gcm
+New,none,"Mek _||_ p38 | JNK, PKC",0.1752987507901581,1,gcm
+New,none,"Mek _||_ p38 | PKA, PKC",0.7117672163410221,1,gcm
+New,none,"Mek _||_ p38 | Akt, PKC",0.10915636388121408,1,gcm
+New,none,"Mek _||_ p38 | Akt, Raf",0.10446269973733169,1,gcm
+New,none,PIP2 _||_ PIP3 | PLCg,6.701340215666818e-4,0.06567313411353481,gcm
+New,none,PIP2 _||_ PKA | PIP3,0.08085910746082203,1,gcm
+New,none,PIP2 _||_ PKA | PLCg,0.6397551327353366,1,gcm
+New,none,PIP2 _||_ PKC | PLCg,0.25164954982700183,1,gcm
+New,none,PIP2 _||_ Raf | PKC,0.5034137557315073,1,gcm
+New,none,PIP2 _||_ Raf | PLCg,0.12434051189598039,1,gcm
+New,none,"PIP2 _||_ p38 | JNK, PKC",0.25937074655870596,1,gcm
+New,none,"PIP2 _||_ p38 | PKA, PKC",0.6512164906997137,1,gcm
+New,none,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.9357393764150023,1,gcm
+New,none,PIP2 _||_ p38 | PLCg,0.35284663179969267,1,gcm
+New,none,"PIP3 _||_ PKC | Akt, PLCg",0.05745825480164268,1,gcm
+New,none,PIP3 _||_ Raf | PKC,0.12119127176608291,1,gcm
+New,none,"PIP3 _||_ Raf | Akt, PLCg",0.3680093521161891,1,gcm
+New,none,"PIP3 _||_ p38 | JNK, PKC",0.9459945071181751,1,gcm
+New,none,"PIP3 _||_ p38 | PKA, PKC",0.19853656564896494,1,gcm
+New,none,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.07185925733099552,1,gcm
+New,none,"PKA _||_ PKC | Akt, PLCg",0.2561577436374105,1,gcm
+New,none,"PKA _||_ PKC | Akt, PIP3",0.1795792732597209,1,gcm
+New,none,PKA _||_ PLCg | PIP3,0.8711814493973719,1,gcm
+New,none,PKA _||_ Raf | PKC,0.9301744364816209,1,gcm
+New,none,"PKA _||_ Raf | Akt, PLCg",0.2760846676724761,1,gcm
+New,none,"PKA _||_ Raf | Akt, PIP3",0.6701202088631663,1,gcm
+New,none,"PKA _||_ p38 | JNK, PKC",0.43608521051388793,1,gcm
+New,none,PLCg _||_ Raf | PKC,0.2210198706685138,1,gcm
+New,none,"PLCg _||_ p38 | JNK, PKC",0.8775961859515422,1,gcm
+New,none,"PLCg _||_ p38 | PKA, PKC",0.21719534738834234,1,gcm
+New,none,"PLCg _||_ p38 | Akt, PIP3, PKC",0.09908027094875393,1,gcm
+New,none,Raf _||_ p38 | PKC,0.07607467964964809,1,gcm
+New,none,"Akt _||_ Erk | Mek, PKA",0.5390916831133379,1,pcm
+New,none,"Akt _||_ JNK | PKA, PKC",0.9869782143346988,1,pcm
+New,none,Akt _||_ PIP2 | PLCg,0.6521336275928411,1,pcm
+New,none,Akt _||_ PIP2 | PIP3,0.6944205057953805,1,pcm
+New,none,Akt _||_ PLCg | PIP3,0.8356099817071391,1,pcm
+New,none,Akt _||_ Raf | PKC,0.5368045951222927,1,pcm
+New,none,"Akt _||_ p38 | JNK, PKC",0.8551540064452726,1,pcm
+New,none,"Akt _||_ p38 | PKA, PKC",0.8745062787234932,1,pcm
+New,none,"Erk _||_ JNK | PKA, PKC",0.08358267404859498,1,pcm
+New,none,"Erk _||_ JNK | Akt, PKA, Raf",0.5855031978894388,1,pcm
+New,none,"Erk _||_ JNK | Mek, PKA",0.471408766637059,1,pcm
+New,none,Erk _||_ PIP2 | PLCg,0.15598244758487567,1,pcm
+New,none,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.18283100889019432,1,pcm
+New,none,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.6278299383061441,1,pcm
+New,none,"Erk _||_ PIP2 | Akt, PKA, PKC",0.5094811936334577,1,pcm
+New,none,"Erk _||_ PIP2 | Akt, PKA, Raf",0.8892119193281394,1,pcm
+New,none,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.21083068506128078,1,pcm
+New,none,"Erk _||_ PIP2 | Mek, PKA",0.7156643457899919,1,pcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.6756887310418485,1,pcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, PKC",0.6179181227708297,1,pcm
+New,none,"Erk _||_ PIP3 | Akt, PKA, Raf",0.14533763971413138,1,pcm
+New,none,"Erk _||_ PIP3 | Mek, PKA",0.21451008194137922,1,pcm
+New,none,"Erk _||_ PKC | Akt, PLCg, Raf",0.8468612104061937,1,pcm
+New,none,"Erk _||_ PKC | Akt, PIP3, Raf",0.4359227156750518,1,pcm
+New,none,"Erk _||_ PKC | Akt, PKA, Raf",0.9792656850431528,1,pcm
+New,none,"Erk _||_ PKC | Akt, Mek, PLCg",0.8568469722202158,1,pcm
+New,none,"Erk _||_ PKC | Akt, Mek, PIP3",0.6734703424202003,1,pcm
+New,none,"Erk _||_ PKC | Mek, PKA",0.06956659447694036,1,pcm
+New,none,"Erk _||_ PLCg | Akt, PIP3, PKC",0.374747919778065,1,pcm
+New,none,"Erk _||_ PLCg | Akt, PIP3, Raf",0.04611031125320175,1,pcm
+New,none,"Erk _||_ PLCg | Akt, PKA, PKC",0.8917714050285249,1,pcm
+New,none,"Erk _||_ PLCg | Akt, PKA, Raf",0.8453350401965927,1,pcm
+New,none,"Erk _||_ PLCg | Akt, Mek, PIP3",0.5869989713264216,1,pcm
+New,none,"Erk _||_ PLCg | Mek, PKA",0.9775283851717628,1,pcm
+New,none,"Erk _||_ Raf | Akt, Mek, PKC",0.9455140755828306,1,pcm
+New,none,"Erk _||_ Raf | Akt, Mek, PLCg",0.8004088410224969,1,pcm
+New,none,"Erk _||_ Raf | Akt, Mek, PIP3",0.03738215369134312,1,pcm
+New,none,"Erk _||_ Raf | Mek, PKA",0.5043648843167772,1,pcm
+New,none,"Erk _||_ p38 | JNK, PKC",0.23312732135299863,1,pcm
+New,none,"Erk _||_ p38 | PKA, PKC",0.5686415068241399,1,pcm
+New,none,"Erk _||_ p38 | Akt, PKA, Raf",0.3985611631924123,1,pcm
+New,none,"Erk _||_ p38 | Mek, PKA",0.8667700316814978,1,pcm
+New,none,"JNK _||_ Mek | Akt, Raf",0.31547031706652195,1,pcm
+New,none,"JNK _||_ Mek | Akt, PKC",0.7110621123222676,1,pcm
+New,none,"JNK _||_ Mek | PKA, PKC",0.7384769570829186,1,pcm
+New,none,JNK _||_ PIP2 | PLCg,0.6498189200874871,1,pcm
+New,none,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.48095060625913955,1,pcm
+New,none,"JNK _||_ PIP2 | PKA, PKC",0.0026512828848023196,0.2598257227106273,pcm
+New,none,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.039703631427199015,1,pcm
+New,none,"JNK _||_ PIP3 | PKA, PKC",0.4337978903298264,1,pcm
+New,none,"JNK _||_ PLCg | Akt, PIP3, PKC",0.18034532913154966,1,pcm
+New,none,"JNK _||_ PLCg | PKA, PKC",0.7700533617426313,1,pcm
+New,none,JNK _||_ Raf | PKC,0.16213273648000115,1,pcm
+New,none,Mek _||_ PIP2 | PLCg,0.045338813174711334,1,pcm
+New,none,"Mek _||_ PIP2 | Akt, PKC",0.7918520748224296,1,pcm
+New,none,"Mek _||_ PIP2 | Akt, Raf",0.5625665205720138,1,pcm
+New,none,"Mek _||_ PIP3 | Akt, PLCg",0.573032628028042,1,pcm
+New,none,"Mek _||_ PIP3 | Akt, PKC",0.4230978254206612,1,pcm
+New,none,"Mek _||_ PIP3 | Akt, Raf",0.5318659547533267,1,pcm
+New,none,"Mek _||_ PKA | Akt, PIP3",0.6478395633026997,1,pcm
+New,none,"Mek _||_ PKA | Akt, PLCg",0.9339771696445505,1,pcm
+New,none,"Mek _||_ PKA | Akt, PKC",0.49224216966303347,1,pcm
+New,none,"Mek _||_ PKA | Akt, Raf",0.971062545104161,1,pcm
+New,none,"Mek _||_ PKC | Akt, Raf",0.7468098161762764,1,pcm
+New,none,"Mek _||_ PLCg | Akt, PKC",0.4009299245318865,1,pcm
+New,none,"Mek _||_ PLCg | Akt, Raf",0.989986454806521,1,pcm
+New,none,"Mek _||_ p38 | JNK, PKC",0.1832310991641959,1,pcm
+New,none,"Mek _||_ p38 | PKA, PKC",0.13389898793220634,1,pcm
+New,none,"Mek _||_ p38 | Akt, PKC",0.761899124564356,1,pcm
+New,none,"Mek _||_ p38 | Akt, Raf",0.6239038065463011,1,pcm
+New,none,PIP2 _||_ PIP3 | PLCg,0.24540831429221321,1,pcm
+New,none,PIP2 _||_ PKA | PIP3,0.5715315572646975,1,pcm
+New,none,PIP2 _||_ PKA | PLCg,0.8107624329541552,1,pcm
+New,none,PIP2 _||_ PKC | PLCg,0.41512502315524025,1,pcm
+New,none,PIP2 _||_ Raf | PKC,0.27160349068451495,1,pcm
+New,none,PIP2 _||_ Raf | PLCg,0.5903394830731622,1,pcm
+New,none,"PIP2 _||_ p38 | JNK, PKC",0.8432578060098083,1,pcm
+New,none,"PIP2 _||_ p38 | PKA, PKC",0.8928265229490927,1,pcm
+New,none,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.156388387183496,1,pcm
+New,none,PIP2 _||_ p38 | PLCg,0.3711870023303785,1,pcm
+New,none,"PIP3 _||_ PKC | Akt, PLCg",0.711319783750077,1,pcm
+New,none,PIP3 _||_ Raf | PKC,0.9004133985785947,1,pcm
+New,none,"PIP3 _||_ Raf | Akt, PLCg",0.5268045702861074,1,pcm
+New,none,"PIP3 _||_ p38 | JNK, PKC",0.6660620980866883,1,pcm
+New,none,"PIP3 _||_ p38 | PKA, PKC",0.30586930115491806,1,pcm
+New,none,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.812105075460371,1,pcm
+New,none,"PKA _||_ PKC | Akt, PLCg",0.32132515437945275,1,pcm
+New,none,"PKA _||_ PKC | Akt, PIP3",0.2027870143310898,1,pcm
+New,none,PKA _||_ PLCg | PIP3,0.5672893120990454,1,pcm
+New,none,PKA _||_ Raf | PKC,0.9009207736055194,1,pcm
+New,none,"PKA _||_ Raf | Akt, PLCg",0.9939370559355726,1,pcm
+New,none,"PKA _||_ Raf | Akt, PIP3",0.9088712951473321,1,pcm
+New,none,"PKA _||_ p38 | JNK, PKC",0.0126437200962366,1,pcm
+New,none,PLCg _||_ Raf | PKC,0.20061720670100736,1,pcm
+New,none,"PLCg _||_ p38 | JNK, PKC",0.345157009882478,1,pcm
+New,none,"PLCg _||_ p38 | PKA, PKC",0.5108184669416556,1,pcm
+New,none,"PLCg _||_ p38 | Akt, PIP3, PKC",0.024069043599780793,1,pcm
+New,none,Raf _||_ p38 | PKC,0.17743320536303953,1,pcm

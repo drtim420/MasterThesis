@@ -1,0 +1,13 @@
+from,to
+PIP2,PIP3
+PIP3,Akt
+PIP3,PLCg
+PLCg,PKC
+PKC,Raf
+Raf,Mek
+Mek,Erk
+PKC,JNK
+PKC,p38
+Akt,Raf
+PKA,Raf
+

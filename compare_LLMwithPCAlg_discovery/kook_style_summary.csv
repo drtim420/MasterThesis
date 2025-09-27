@@ -1,0 +1,5 @@
+"graph","test","n_CIs","n_rejected"
+"LLM","gcm",79,5
+"LLM","pcm",79,5
+"PC","gcm",2,1
+"PC","pcm",2,2
