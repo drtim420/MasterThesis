@@ -81,7 +81,7 @@ get_dag <- function(which = c("consensus","sachs"), int = c("none","Akt","PIP2",
   amat
 }
 
-read_data <- function(int = c("none","Akt","PIP2","Erk","PKC","PIP3"), path = "../data") {
+read_data <- function(int = c("none","Akt","PIP2","Erk","PKC","PIP3"), path = "~/Desktop/master_thesis/code/MasterThesis/agent_tool_based_dag_discovery/data") {
   int <- match.arg(int)
   file <- switch(int,
                  none = "cd3cd28.xls", Akt = "cd3cd28+aktinhib.xls", PIP2 = "cd3cd28+psitect.xls",
@@ -281,65 +281,11 @@ tool_apply_edits <- function(adjacency, variables, edits) {
 
 
 
-# ---------------------------- Controller (agent loop) -------------------------
-# Runs propose -> test -> (optional) refine for up to max_iter iterations.
-# Returns a list with adjacency_final, history (results per iter), and summaries.
-agent_loop <- function(data,
-                       variables = colnames(data),
-                       max_iter = 0,
-                       edit_budget = 3,
-                       tests = TESTS_DEFAULT,
-                       alpha = alpha_default) {
-  stopifnot(identical(unname(variables), unname(colnames(data))))
-  # Iteration 0: propose
-  message("Proposing initial DAG via LLM...")
-  prop <- tool_propose_matrix(variables, model = MODEL, temperature = 0)
-  A_cur <- prop$adjacency
-  v <- tool_validate_matrix(A_cur, variables)
-  if (!v$ok) stop("Initial proposal invalid: ", paste(v$errors, collapse = "; "))
-  
-  history <- list()
-  iter <- 0
-  repeat {
-    message(sprintf("Testing (iter %d)...", iter))
-    dag <- v$dag
-    cis <- tool_extract_cis(dag)
-    res_list <- lapply(tests, function(tst) tool_lk_test(data, cis, test = tst, alpha = alpha))
-    res <- bind_rows(res_list)
-    res$iter <- iter
-    history[[length(history)+1]] <- res
-    
-    fals_gcm <- any(res$test=="gcm" & res$adj.p.value < alpha)
-    fals_pcm <- any(res$test=="pcm" & res$adj.p.value < alpha)
-    if ((!fals_gcm && !fals_pcm) || iter >= max_iter) break
-    
-    # Prepare violations table for the LLM editor
-    viol <- res %>% filter(adj.p.value < alpha) %>% arrange(adj.p.value)
-    if (nrow(viol) == 0) break  # should not happen given condition, but safe
-    
-    message("Suggesting edits via LLM...")
-    edits <- tool_suggest_edits(A_cur, variables, viol, budget_k = edit_budget, model = EDIT_MODEL)
-    if (!nrow(edits)) break
-    message("Applying edits...")
-    A_new <- tool_apply_edits(A_cur, variables, edits)
-    A_cur <- A_new
-    v <- tool_validate_matrix(A_cur, variables)
-    if (!v$ok) break
-    iter <- iter + 1
-  }
-  
-  results_all <- bind_rows(history)
-  summary_tbl <- results_all %>%
-    group_by(iter, test) %>%
-    summarise(n_cis_tested = unique(n_cis_tested), falsified = any(adj.p.value < alpha),
-              n_violations = sum(adj.p.value < alpha), .groups = "drop")
-  list(adjacency_final = A_cur, history = results_all, summary = summary_tbl)
-}
 
 # ---------------------------- Example usage (single dataset) -----------------
 # NOTE: Uncomment to run in your project after setting up .env and data path.
 #
-DATA_PATH <- "../data"  # adjust as needed
+DATA_PATH <- "~/Desktop/master_thesis/code/MasterThesis/agent_tool_based_dag_discovery/data"  # adjust as needed
 D_obs <- read_data(int = "none", path = DATA_PATH)
 stopifnot(identical(colnames(D_obs), nms))
 #
