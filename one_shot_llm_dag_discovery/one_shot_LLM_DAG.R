@@ -15,6 +15,23 @@
 #  - The Sachs .xls files available (path configured below)
 # ---------------------------------------------------------------------------
 
+library(dotenv)
+
+# if you just updated .env and want to refresh in the SAME session:
+Sys.unsetenv("OPENAI_API_KEY")      # clear the old value
+dotenv::load_dot_env(".env")        # reload from file
+
+# quick sanity check (don’t print full key)
+nchar(Sys.getenv("OPENAI_API_KEY")) > 0
+
+
+
+
+# (optional sanity check)
+substr(Sys.getenv("OPENAI_API_KEY"), 1, 6)  # don't print full key
+
+
+
 # =========================
 # 0) Libraries & config
 # =========================
@@ -36,7 +53,7 @@ suppressPackageStartupMessages({
 set.seed(1)
 alpha <- 0.05
 TESTS <- c("gcm","pcm")
-DATA_PATH <- "../data"   # adjust if needed
+DATA_PATH <- "~/Desktop/master_thesis/code/MasterThesis/one_shot_llm_dag_discovery/data"   # adjust if needed
 SAVE_RESULTS <- TRUE
 RESULTS_DIR <- "../results"
 
@@ -133,7 +150,7 @@ stop_if_no_key <- function() {
   }
 }
 
-agent_propose_adj <- function(variables, model = "gpt-5-thinking", temperature = 0) {
+agent_propose_adj <- function(variables, model = "gpt-4o-mini", temperature = 0) {
   stop_if_no_key()
   # Build prompts (strict JSON output)
   system_msg <- paste(
@@ -162,8 +179,9 @@ agent_propose_adj <- function(variables, model = "gpt-5-thinking", temperature =
     req_body_json(body) |>
     req_perform()
   
-  txt <- resp |>
-    resp_body_json(simplifyVector = TRUE)$choices[[1]]$message$content
+  resp_json <- resp_body_json(resp, simplifyVector = TRUE)
+  txt <- resp_json$choices[[1]]$message$content
+  
   
   # Parse JSON
   out <- try(jsonlite::fromJSON(txt), silent = TRUE)
