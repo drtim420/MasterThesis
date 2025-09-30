@@ -27,6 +27,8 @@ suppressPackageStartupMessages({
 if (requireNamespace("dotenv", quietly = TRUE)) {
   try(dotenv::load_dot_env(".env"), silent = TRUE)
 }
+library(dotenv)
+dotenv::load_dot_env("~/Desktop/master_thesis/code/MasterThesis/one_shot_llm_dag_discovery/.env")
 
 # Config ----------------------------------------------------------------------
 alpha_default <- 0.05
@@ -202,6 +204,7 @@ tool_decide <- function(results_by_test) {
   )
 }
 
+if (FALSE) {
 # 6) Suggest edits via LLM -----------------------------------------------------
 # Input: adjacency, variables, violations (tibble with CI and adj.p.value), budget_k
 # Output: data.frame(op, from, to) with op in {add, remove, reverse}
@@ -248,6 +251,7 @@ tool_suggest_edits <- function(adjacency, variables, violations, budget_k = 3,
   }
   edits
 }
+}
 
 # 7) Apply edits safely --------------------------------------------------------
 # Returns updated adjacency if valid and acyclic; errors if invalid
@@ -275,27 +279,7 @@ tool_apply_edits <- function(adjacency, variables, edits) {
   A
 }
 
-# Optional: BIC score (not part of LK; only for tie-breaks) -------------------
-tool_score_bic <- function(adjacency, data) {
-  vars <- colnames(adjacency)
-  bn <- bnlearn::empty.graph(vars)
-  idx <- which(adjacency == 1, arr.ind = TRUE)
-  arcs <- cbind(vars[idx[,1]], vars[idx[,2]])
-  bnlearn::arcs(bn) <- arcs
-  suppressWarnings(try(score(bn, data = data, type = "bic"), silent = TRUE))
-}
 
-# Optional: SHD to consensus (reporting only) ---------------------------------
-tool_shd <- function(A, A_consensus = get_dag("consensus","none")) {
-  to_bn <- function(A) {
-    vars <- colnames(A)
-    bn <- bnlearn::empty.graph(vars)
-    idx <- which(A == 1, arr.ind = TRUE)
-    bnlearn::arcs(bn) <- cbind(vars[idx[,1]], vars[idx[,2]])
-    bn
-  }
-  bnlearn::shd(to_bn(A), to_bn(A_consensus))
-}
 
 # ---------------------------- Controller (agent loop) -------------------------
 # Runs propose -> test -> (optional) refine for up to max_iter iterations.
