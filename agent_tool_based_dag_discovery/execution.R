@@ -5,8 +5,12 @@ source("~/Desktop/master_thesis/code/MasterThesis/agent_tool_based_dag_discovery
 
 D_obs <- read_data(int = "none", path = "~/Desktop/master_thesis/code/MasterThesis/agent_tool_based_dag_discovery/data")
 
-out <- run_llm_agent(D_obs, variables = colnames(D_obs), max_steps = 8, alpha = 0.05)
+out <- run_llm_agent(D_obs, variables = colnames(D_obs),
+                     max_steps = 8, alpha = 0.05, interpret = TRUE)
 
+# You’ll see the bullet-point interpretation printed.
+# And you can access the raw text too:
+out$interpretation
 # Quick summary like before:
 library(dplyr)
 out$last_results %>%

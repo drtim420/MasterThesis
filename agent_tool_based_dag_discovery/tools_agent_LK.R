@@ -279,7 +279,108 @@ tool_apply_edits <- function(adjacency, variables, edits) {
   A
 }
 
-
+# ---- Improved LLM interpreter for LK results --------------------------------
+llm_interpret_results <- function(results_tbl,
+                                  adjacency = NULL,
+                                  alpha = 0.05,
+                                  model = Sys.getenv("OPENAI_INTERPRET_MODEL",
+                                                     unset = Sys.getenv("OPENAI_MODEL", unset = "gpt-4o-mini")),
+                                  temperature = 0) {
+  stop_if_no_key()
+  
+  # Compact numeric facts for grounding
+  suppressWarnings({
+    library(dplyr)
+  })
+  summary_tbl <- results_tbl %>%
+    group_by(test) %>%
+    summarise(n_cis_tested = unique(n_cis_tested),
+              falsified = any(adj.p.value < alpha),
+              n_violations = sum(adj.p.value < alpha),
+              .groups = "drop")
+  
+  # Smallest adjusted p-values per test (evidence strength)
+  min_adj <- results_tbl %>%
+    group_by(test) %>%
+    summarise(min_adj_p = ifelse(any(!is.na(adj.p.value)), min(adj.p.value, na.rm = TRUE), NA_real_),
+              .groups = "drop")
+  
+  edges <- if (!is.null(adjacency)) sum(adjacency) else NA_integer_
+  
+  # Optional: SHD to Consensus (if tool_shd is available and adjacency given)
+  shd_cons <- NA_integer_
+  if (!is.null(adjacency) && exists("tool_shd", mode = "function")) {
+    shd_cons <- tryCatch(tool_shd(adjacency), error = function(...) NA_integer_)
+  }
+  
+  # Turn summary into plain text for the prompt (no huge data)
+  summary_txt <- paste(capture.output(print(summary_tbl, n = Inf)), collapse = "\n")
+  min_txt     <- paste(capture.output(print(min_adj, n = Inf)), collapse = "\n")
+  
+  # System guardrails: CI means conditional independence — never confidence interval.
+  sys <- paste(
+    "You are a concise, stats-savvy assistant.",
+    "Context: LK falsification with COMETS (GCM/PCM) tests of DAG-implied conditional independencies (CIs) with Holm correction.",
+    "CRITICAL TERMINOLOGY RULES:",
+    "- 'CI' means 'conditional independence'.",
+    "- DO NOT mention 'confidence intervals' anywhere.",
+    "STYLE:",
+    "- Return 5 bullet points.",
+    "- Use short bolded labels (e.g., **Verdict**, **Scope**, **Evidence**, **Caveats**, **Next**).",
+    sep = "\n"
+  )
+  
+  usr <- paste0(
+    "Summarise these results from the Sachs observational dataset.\n\n",
+    "Alpha (Holm): ", alpha, "\n",
+    "Edges in DAG: ", edges, "\n",
+    "SHD vs Consensus (if available): ", shd_cons, "\n\n",
+    "Per-test summary table:\n", summary_txt, "\n\n",
+    "Smallest adjusted p-values per test:\n", min_txt, "\n\n",
+    "Instructions:\n",
+    "- State whether any test falsified the DAG.\n",
+    "- Report how many CIs were tested per test.\n",
+    "- Mention the smallest adjusted p-values as evidence strength.\n",
+    "- Include a caveat that 'not falsified' ≠ 'proven correct'.\n",
+    "- Suggest one next step (e.g., test interventional data or add a minimum-CI guard)."
+  )
+  
+  body <- list(
+    model = model,
+    temperature = temperature,
+    messages = list(
+      list(role = "system", content = sys),
+      list(role = "user",   content = usr)
+    )
+  )
+  
+  req <- httr2::request("https://api.openai.com/v1/chat/completions") |>
+    httr2::req_headers(
+      Authorization = paste("Bearer", Sys.getenv("OPENAI_API_KEY")),
+      "Content-Type" = "application/json"
+    ) |>
+    httr2::req_body_json(body)
+  
+  resp <- httr2::req_perform(req)
+  js   <- httr2::resp_body_json(resp, simplifyVector = FALSE)
+  if (!is.null(js$error)) stop(paste0("OpenAI API error: ", js$error$message))
+  
+  content <- js$choices[[1]]$message$content
+  if (is.list(content)) {
+    content <- paste(vapply(content, function(part) {
+      if (!is.null(part$text)) part$text else ""
+    }, character(1)), collapse = "")
+  }
+  out <- as.character(content)
+  
+  # Safety net: fix any accidental misuse of CI wording
+  out <- gsub("confidence interval[s]?", "conditional independence", out, ignore.case = TRUE)
+  
+  cat("\n----- LLM interpretation -----\n")
+  cat(out, "\n")
+  cat("------------------------------\n")
+  invisible(out)
+}
 
 
 # ---------------------------- Example usage (single dataset) -----------------

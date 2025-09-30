@@ -128,7 +128,8 @@ planner_system_prompt <- function() {
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 # --------------------------- Agent Runner ------------------------------------
-run_llm_agent <- function(data, variables, max_steps = 8, alpha = 0.05, verbose = TRUE) {
+run_llm_agent <- function(data, variables, max_steps = 8, alpha = 0.05,
+                          verbose = TRUE, interpret = TRUE) {
   stop_if_no_key()
   state <- list(data = data, variables = variables, A = NULL, last_results = NULL, violations = NULL)
   
@@ -198,8 +199,22 @@ run_llm_agent <- function(data, variables, max_steps = 8, alpha = 0.05, verbose 
     step <- step + 1
   }
   
+  
+  interp_txt <- NULL
+  if (interpret && !is.null(state$last_results)) {
+    interp_txt <- try(
+      llm_interpret_results(state$last_results, adjacency = state$A, alpha = alpha),
+      silent = TRUE
+    )
+    if (inherits(interp_txt, "try-error")) interp_txt <- NULL
+  }
+  
   # Return final objects for downstream use
-  list(adjacency = state$A, last_results = state$last_results, violations = state$violations)
+  list(adjacency = state$A,
+       last_results = state$last_results,
+       violations = state$violations,
+       interpretation = interp_txt)
+  
 }
 
 # --------------------------- Example usage -----------------------------------
