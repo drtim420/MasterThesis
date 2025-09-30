@@ -1,0 +1,30 @@
+dag {
+Akt
+Erk
+JNK
+Mek
+PIP2
+PIP3
+PKA
+PKC
+PLCg
+Raf
+p38
+Akt -> Mek
+JNK -> p38
+Mek -> Erk
+PIP3 -> Akt
+PIP3 -> PKA
+PKA -> Akt
+PKA -> Erk
+PKA -> JNK
+PKC -> Akt
+PKC -> JNK
+PKC -> Raf
+PKC -> p38
+PLCg -> PIP2
+PLCg -> PIP3
+PLCg -> PKC
+Raf -> Mek
+}
+

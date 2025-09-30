@@ -1,0 +1,3 @@
+test,CI,p.value,adj.p.value,dataset
+gcm,Akt _||_ PLCg | PIP3,1.3754111486186105e-5,0.0013479029256462383,cd3cd28_n1000_flip2.csv
+pcm,PKA _||_ Raf | PKC,3.2168259603104765e-4,0.03152489441104267,cd3cd28_n1000_flip2.csv

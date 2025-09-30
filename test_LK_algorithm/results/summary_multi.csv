@@ -1,0 +1,7 @@
+dataset,test,n_CI,n_viol,prop_viol
+cd3cd28.csv,gcm,98,0,0
+cd3cd28.csv,pcm,98,0,0
+cd3cd28_n1000_flip2.csv,gcm,98,1,0.01020408163265306
+cd3cd28_n1000_flip2.csv,pcm,98,1,0.01020408163265306
+cd3cd28_n1000_remove2.csv,gcm,98,0,0
+cd3cd28_n1000_remove2.csv,pcm,98,0,0

@@ -1,0 +1,589 @@
+test,CI,p.value,adj.p.value,dataset
+gcm,"Akt _||_ Erk | Mek, PKA",0.05518180590705646,1,cd3cd28_n1000_flip2.csv
+gcm,"Akt _||_ JNK | PKA, PKC",0.9087596128116512,1,cd3cd28_n1000_flip2.csv
+gcm,Akt _||_ PIP2 | PLCg,0.04708198417585219,1,cd3cd28_n1000_flip2.csv
+gcm,Akt _||_ PIP2 | PIP3,5.767153567820538e-4,0.055941389607859215,cd3cd28_n1000_flip2.csv
+gcm,Akt _||_ PLCg | PIP3,1.3754111486186105e-5,0.0013479029256462383,cd3cd28_n1000_flip2.csv
+gcm,Akt _||_ Raf | PKC,0.003978237638723958,0.37395433804005207,cd3cd28_n1000_flip2.csv
+gcm,"Akt _||_ p38 | JNK, PKC",0.3592727594189523,1,cd3cd28_n1000_flip2.csv
+gcm,"Akt _||_ p38 | PKA, PKC",0.6033311383106355,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ JNK | PKA, PKC",0.1594104213399209,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ JNK | Akt, PKA, Raf",0.9972000800527722,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ JNK | Mek, PKA",0.9158737330409035,1,cd3cd28_n1000_flip2.csv
+gcm,Erk _||_ PIP2 | PLCg,0.5182353213896158,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.14902003162243382,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.5267902063783386,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.501972675564561,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.48157523748037734,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.45644598545992543,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP2 | Mek, PKA",0.527832986192882,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.1438390372169105,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.07963996727432299,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.040521455888852365,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PIP3 | Mek, PKA",0.003431561110050385,0.3259983054547866,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.056115670382793525,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.1825559435379811,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Akt, PKA, Raf",0.356643723764393,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.06801201694541592,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.4545661808554875,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PKC | Mek, PKA",0.043584693113189577,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.2243436873835981,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.9280772976141992,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.9381081234373483,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.6345778253067771,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.5883706144991757,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ PLCg | Mek, PKA",0.19985527418999627,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PKC",0.5264654705451411,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.28570505329298135,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.13567501838457208,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ Raf | Mek, PKA",0.10549283273275178,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ p38 | JNK, PKC",0.16621929007677638,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ p38 | PKA, PKC",0.2883958774977362,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ p38 | Akt, PKA, Raf",0.21738283594087282,1,cd3cd28_n1000_flip2.csv
+gcm,"Erk _||_ p38 | Mek, PKA",0.18032079366380172,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ Mek | Akt, Raf",0.8566079229537182,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ Mek | Akt, PKC",0.724515620826267,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ Mek | PKA, PKC",0.22118316968499208,1,cd3cd28_n1000_flip2.csv
+gcm,JNK _||_ PIP2 | PLCg,0.8955106933032918,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.7012794299335846,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PIP2 | PKA, PKC",0.9645074762977934,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.9486866366828096,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PIP3 | PKA, PKC",0.8342764976055154,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.7715798378535041,1,cd3cd28_n1000_flip2.csv
+gcm,"JNK _||_ PLCg | PKA, PKC",0.7147164419793377,1,cd3cd28_n1000_flip2.csv
+gcm,JNK _||_ Raf | PKC,0.5834204569940289,1,cd3cd28_n1000_flip2.csv
+gcm,Mek _||_ PIP2 | PLCg,0.04364671046102586,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PIP2 | Akt, PKC",0.7148584013803893,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PIP2 | Akt, Raf",0.37775730101607485,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PIP3 | Akt, PLCg",0.4360049675170248,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PIP3 | Akt, PKC",0.22440808828336378,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PIP3 | Akt, Raf",0.47235823034711766,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PKA | Akt, PIP3",0.25211049561472676,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PKA | Akt, PLCg",0.05173430053398487,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PKA | Akt, PKC",0.051087466915719415,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PKA | Akt, Raf",0.9135071844178683,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PKC | Akt, Raf",0.31692281335648353,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PLCg | Akt, PKC",0.9492023489161044,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ PLCg | Akt, Raf",0.6512920716639292,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ p38 | JNK, PKC",0.9948646266772344,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ p38 | PKA, PKC",0.6213088395087241,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ p38 | Akt, PKC",0.36226776197160915,1,cd3cd28_n1000_flip2.csv
+gcm,"Mek _||_ p38 | Akt, Raf",0.22866175488073237,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ PIP3 | PLCg,0.6924420560210711,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ PKA | PIP3,0.9592249323088415,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ PKA | PLCg,0.8029755388916218,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ PKC | PLCg,0.37751925327849734,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ Raf | PKC,0.6697281527439257,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ Raf | PLCg,5.935636746554618e-4,0.05698211276692433,cd3cd28_n1000_flip2.csv
+gcm,"PIP2 _||_ p38 | JNK, PKC",0.181120001934841,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP2 _||_ p38 | PKA, PKC",0.036292152259381094,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.2236975306039859,1,cd3cd28_n1000_flip2.csv
+gcm,PIP2 _||_ p38 | PLCg,0.09842596104544721,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP3 _||_ PKC | Akt, PLCg",0.04298324112607954,1,cd3cd28_n1000_flip2.csv
+gcm,PIP3 _||_ Raf | PKC,0.8479861321461802,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP3 _||_ Raf | Akt, PLCg",0.027937572590059356,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP3 _||_ p38 | JNK, PKC",0.5109200265829141,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP3 _||_ p38 | PKA, PKC",0.1935099909053366,1,cd3cd28_n1000_flip2.csv
+gcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.05461597196922796,1,cd3cd28_n1000_flip2.csv
+gcm,"PKA _||_ PKC | Akt, PLCg",0.011740285885900148,1,cd3cd28_n1000_flip2.csv
+gcm,"PKA _||_ PKC | Akt, PIP3",0.04918023427650764,1,cd3cd28_n1000_flip2.csv
+gcm,PKA _||_ PLCg | PIP3,0.7729873848332613,1,cd3cd28_n1000_flip2.csv
+gcm,PKA _||_ Raf | PKC,0.4526722866824592,1,cd3cd28_n1000_flip2.csv
+gcm,"PKA _||_ Raf | Akt, PLCg",0.07063355553703932,1,cd3cd28_n1000_flip2.csv
+gcm,"PKA _||_ Raf | Akt, PIP3",0.3638802169151448,1,cd3cd28_n1000_flip2.csv
+gcm,"PKA _||_ p38 | JNK, PKC",0.24458677460995848,1,cd3cd28_n1000_flip2.csv
+gcm,PLCg _||_ Raf | PKC,0.4314123401945744,1,cd3cd28_n1000_flip2.csv
+gcm,"PLCg _||_ p38 | JNK, PKC",0.3331659276840109,1,cd3cd28_n1000_flip2.csv
+gcm,"PLCg _||_ p38 | PKA, PKC",0.6387050733999642,1,cd3cd28_n1000_flip2.csv
+gcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.41674376664141,1,cd3cd28_n1000_flip2.csv
+gcm,Raf _||_ p38 | PKC,0.38737760987165193,1,cd3cd28_n1000_flip2.csv
+pcm,"Akt _||_ Erk | Mek, PKA",0.942265129758437,1,cd3cd28_n1000_flip2.csv
+pcm,"Akt _||_ JNK | PKA, PKC",0.5211437530241361,1,cd3cd28_n1000_flip2.csv
+pcm,Akt _||_ PIP2 | PLCg,0.5052229938981894,1,cd3cd28_n1000_flip2.csv
+pcm,Akt _||_ PIP2 | PIP3,0.0033758465660534975,0.32745711690718926,cd3cd28_n1000_flip2.csv
+pcm,Akt _||_ PLCg | PIP3,0.06028089357343214,1,cd3cd28_n1000_flip2.csv
+pcm,Akt _||_ Raf | PKC,0.6495650546093117,1,cd3cd28_n1000_flip2.csv
+pcm,"Akt _||_ p38 | JNK, PKC",0.9865292774945633,1,cd3cd28_n1000_flip2.csv
+pcm,"Akt _||_ p38 | PKA, PKC",0.1917451336027931,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ JNK | PKA, PKC",0.8303317512746198,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ JNK | Akt, PKA, Raf",0.7033727720147752,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ JNK | Mek, PKA",0.03823303803992362,1,cd3cd28_n1000_flip2.csv
+pcm,Erk _||_ PIP2 | PLCg,0.3937418458960391,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.6519713085013074,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.7031482440657413,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.5820644686350571,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.20770555742200592,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.3086367129189056,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP2 | Mek, PKA",0.408860986609227,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.569672880174126,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.07720575516913275,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.2322753681709372,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PIP3 | Mek, PKA",0.10704577440625673,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.6504216018041931,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.4320606798022544,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Akt, PKA, Raf",0.4191271767800383,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.7261668390315821,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.4853350633907666,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PKC | Mek, PKA",0.5363632207197415,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.0639265066843755,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.9976738937881647,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.6422308641669142,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.6558945798447251,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.4682993126749322,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ PLCg | Mek, PKA",0.40211737118367696,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PKC",0.12895183328963755,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.7401208174583114,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.5946762528994438,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ Raf | Mek, PKA",0.30595781543270717,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ p38 | JNK, PKC",0.151546540331427,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ p38 | PKA, PKC",0.1990836681322925,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ p38 | Akt, PKA, Raf",0.8982993856757414,1,cd3cd28_n1000_flip2.csv
+pcm,"Erk _||_ p38 | Mek, PKA",0.6907589268570373,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ Mek | Akt, Raf",0.9270956997611183,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ Mek | Akt, PKC",0.9446543401105616,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ Mek | PKA, PKC",0.1958041037102758,1,cd3cd28_n1000_flip2.csv
+pcm,JNK _||_ PIP2 | PLCg,0.5018291522720737,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.09433760084263199,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PIP2 | PKA, PKC",0.5065377022522308,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.5625245302185033,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PIP3 | PKA, PKC",0.9222720539933792,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.9291618689661294,1,cd3cd28_n1000_flip2.csv
+pcm,"JNK _||_ PLCg | PKA, PKC",0.42234629192699547,1,cd3cd28_n1000_flip2.csv
+pcm,JNK _||_ Raf | PKC,0.2115057620874028,1,cd3cd28_n1000_flip2.csv
+pcm,Mek _||_ PIP2 | PLCg,0.8643707291467856,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PIP2 | Akt, PKC",0.9484438544315286,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PIP2 | Akt, Raf",0.30907913480969795,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PIP3 | Akt, PLCg",0.9126288167957028,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PIP3 | Akt, PKC",0.23797877017637958,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PIP3 | Akt, Raf",0.18630450385028152,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PKA | Akt, PIP3",0.10954988497705331,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PKA | Akt, PLCg",0.5655505549357045,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PKA | Akt, PKC",0.6173288624229684,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PKA | Akt, Raf",0.39749380567202186,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PKC | Akt, Raf",0.5872879657564181,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PLCg | Akt, PKC",0.8997556797209305,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ PLCg | Akt, Raf",0.5118921338044498,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ p38 | JNK, PKC",0.4248832843839827,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ p38 | PKA, PKC",0.13970101609851782,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ p38 | Akt, PKC",0.6291261873768965,1,cd3cd28_n1000_flip2.csv
+pcm,"Mek _||_ p38 | Akt, Raf",0.6650783933129925,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ PIP3 | PLCg,0.8960630825293271,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ PKA | PIP3,0.44187650228190267,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ PKA | PLCg,0.3463457258710745,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ PKC | PLCg,0.6904494101115726,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ Raf | PKC,0.06439901781577373,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ Raf | PLCg,0.2864275603313311,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP2 _||_ p38 | JNK, PKC",0.16955209929254444,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP2 _||_ p38 | PKA, PKC",0.9742945210649573,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.68954007106026,1,cd3cd28_n1000_flip2.csv
+pcm,PIP2 _||_ p38 | PLCg,0.9754323977599543,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP3 _||_ PKC | Akt, PLCg",0.30064393201615125,1,cd3cd28_n1000_flip2.csv
+pcm,PIP3 _||_ Raf | PKC,0.4773372418339943,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP3 _||_ Raf | Akt, PLCg",0.9545942505435167,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP3 _||_ p38 | JNK, PKC",0.8589748630218956,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP3 _||_ p38 | PKA, PKC",0.9512528835415107,1,cd3cd28_n1000_flip2.csv
+pcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.8120184657176,1,cd3cd28_n1000_flip2.csv
+pcm,"PKA _||_ PKC | Akt, PLCg",0.10024756459855388,1,cd3cd28_n1000_flip2.csv
+pcm,"PKA _||_ PKC | Akt, PIP3",0.10757593440454882,1,cd3cd28_n1000_flip2.csv
+pcm,PKA _||_ PLCg | PIP3,0.19154064390892334,1,cd3cd28_n1000_flip2.csv
+pcm,PKA _||_ Raf | PKC,3.2168259603104765e-4,0.03152489441104267,cd3cd28_n1000_flip2.csv
+pcm,"PKA _||_ Raf | Akt, PLCg",0.3785996073599168,1,cd3cd28_n1000_flip2.csv
+pcm,"PKA _||_ Raf | Akt, PIP3",0.3418977653229205,1,cd3cd28_n1000_flip2.csv
+pcm,"PKA _||_ p38 | JNK, PKC",0.1025772605012808,1,cd3cd28_n1000_flip2.csv
+pcm,PLCg _||_ Raf | PKC,0.643798751358342,1,cd3cd28_n1000_flip2.csv
+pcm,"PLCg _||_ p38 | JNK, PKC",0.3264377879332162,1,cd3cd28_n1000_flip2.csv
+pcm,"PLCg _||_ p38 | PKA, PKC",0.08190388663122439,1,cd3cd28_n1000_flip2.csv
+pcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.05964006944932054,1,cd3cd28_n1000_flip2.csv
+pcm,Raf _||_ p38 | PKC,0.721958097070458,1,cd3cd28_n1000_flip2.csv
+gcm,"Akt _||_ Erk | Mek, PKA",0.536273253494889,1,cd3cd28_n1000_remove2.csv
+gcm,"Akt _||_ JNK | PKA, PKC",0.3219747909125077,1,cd3cd28_n1000_remove2.csv
+gcm,Akt _||_ PIP2 | PLCg,0.01193544342068753,1,cd3cd28_n1000_remove2.csv
+gcm,Akt _||_ PIP2 | PIP3,0.9539380822575614,1,cd3cd28_n1000_remove2.csv
+gcm,Akt _||_ PLCg | PIP3,0.09042339281082024,1,cd3cd28_n1000_remove2.csv
+gcm,Akt _||_ Raf | PKC,0.5629735126482229,1,cd3cd28_n1000_remove2.csv
+gcm,"Akt _||_ p38 | JNK, PKC",0.5241013987846158,1,cd3cd28_n1000_remove2.csv
+gcm,"Akt _||_ p38 | PKA, PKC",0.5513503199066676,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ JNK | PKA, PKC",0.6868489229180154,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ JNK | Akt, PKA, Raf",0.41642807284522043,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ JNK | Mek, PKA",0.7709141692346093,1,cd3cd28_n1000_remove2.csv
+gcm,Erk _||_ PIP2 | PLCg,0.8152794280730005,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.7244494453388758,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.9236069263147255,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.9809479385095312,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.16634270207959978,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.8821900854702484,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP2 | Mek, PKA",0.952685331119569,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.03156024190696827,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.08133256665562127,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.01721700908349466,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PIP3 | Mek, PKA",0.15427778224570554,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.04180352286135902,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.1683918916098659,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Akt, PKA, Raf",0.18810060066457535,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.12809415824085968,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.4830102904518483,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PKC | Mek, PKA",0.31598029110910575,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.27215663436407056,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.28496938718841247,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.8255316860333172,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.48966790226877055,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.16546316115759319,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ PLCg | Mek, PKA",0.914287259185946,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PKC",0.9019584394789659,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.13800452224749793,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.329035840849744,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ Raf | Mek, PKA",0.5189936856182443,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ p38 | JNK, PKC",0.1440979303701937,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ p38 | PKA, PKC",0.5975135268328391,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ p38 | Akt, PKA, Raf",0.6969034685644138,1,cd3cd28_n1000_remove2.csv
+gcm,"Erk _||_ p38 | Mek, PKA",0.27362295010739635,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ Mek | Akt, Raf",0.12291525537243153,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ Mek | Akt, PKC",0.6054188823282733,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ Mek | PKA, PKC",0.3048564721547682,1,cd3cd28_n1000_remove2.csv
+gcm,JNK _||_ PIP2 | PLCg,0.30382919452234625,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.598267676099558,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PIP2 | PKA, PKC",0.3191874185969369,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.28655266768078946,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PIP3 | PKA, PKC",0.8654492203033145,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.5527774975926965,1,cd3cd28_n1000_remove2.csv
+gcm,"JNK _||_ PLCg | PKA, PKC",0.47432960740124175,1,cd3cd28_n1000_remove2.csv
+gcm,JNK _||_ Raf | PKC,0.9226281873988301,1,cd3cd28_n1000_remove2.csv
+gcm,Mek _||_ PIP2 | PLCg,0.5287151466472426,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PIP2 | Akt, PKC",0.5333047046322847,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PIP2 | Akt, Raf",0.8587974697250663,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PIP3 | Akt, PLCg",0.10529280240012029,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PIP3 | Akt, PKC",0.2432310839063816,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PIP3 | Akt, Raf",0.028069292499141363,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PKA | Akt, PIP3",0.48779497330933186,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PKA | Akt, PLCg",0.42774495432892123,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PKA | Akt, PKC",0.21967975788420502,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PKA | Akt, Raf",0.3812097053172999,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PKC | Akt, Raf",0.9065344404490797,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PLCg | Akt, PKC",0.6160907373707463,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ PLCg | Akt, Raf",0.2593213063068325,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ p38 | JNK, PKC",0.5302153275266411,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ p38 | PKA, PKC",0.7860281335779997,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ p38 | Akt, PKC",0.8712265190386906,1,cd3cd28_n1000_remove2.csv
+gcm,"Mek _||_ p38 | Akt, Raf",0.38777748067229645,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ PIP3 | PLCg,0.9701820399660307,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ PKA | PIP3,0.6860705482458652,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ PKA | PLCg,0.7772018695940088,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ PKC | PLCg,0.8846138450166249,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ Raf | PKC,0.5587264359235576,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ Raf | PLCg,0.9954766256014759,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP2 _||_ p38 | JNK, PKC",0.9240996742436008,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP2 _||_ p38 | PKA, PKC",0.8757716837006471,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.6348435478438765,1,cd3cd28_n1000_remove2.csv
+gcm,PIP2 _||_ p38 | PLCg,0.22422832654503888,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP3 _||_ PKC | Akt, PLCg",0.3158991323616137,1,cd3cd28_n1000_remove2.csv
+gcm,PIP3 _||_ Raf | PKC,0.18093075464225172,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP3 _||_ Raf | Akt, PLCg",0.8630939825265428,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP3 _||_ p38 | JNK, PKC",0.14759146803911805,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP3 _||_ p38 | PKA, PKC",0.44871269241737377,1,cd3cd28_n1000_remove2.csv
+gcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.2760928188941648,1,cd3cd28_n1000_remove2.csv
+gcm,"PKA _||_ PKC | Akt, PLCg",0.1444028759902034,1,cd3cd28_n1000_remove2.csv
+gcm,"PKA _||_ PKC | Akt, PIP3",0.29678080341984536,1,cd3cd28_n1000_remove2.csv
+gcm,PKA _||_ PLCg | PIP3,0.7272809965186116,1,cd3cd28_n1000_remove2.csv
+gcm,PKA _||_ Raf | PKC,0.07112739969391346,1,cd3cd28_n1000_remove2.csv
+gcm,"PKA _||_ Raf | Akt, PLCg",0.8663480103913586,1,cd3cd28_n1000_remove2.csv
+gcm,"PKA _||_ Raf | Akt, PIP3",0.4224400844958599,1,cd3cd28_n1000_remove2.csv
+gcm,"PKA _||_ p38 | JNK, PKC",0.9562058044741121,1,cd3cd28_n1000_remove2.csv
+gcm,PLCg _||_ Raf | PKC,0.7634162679031482,1,cd3cd28_n1000_remove2.csv
+gcm,"PLCg _||_ p38 | JNK, PKC",0.27605624064422385,1,cd3cd28_n1000_remove2.csv
+gcm,"PLCg _||_ p38 | PKA, PKC",0.28396942497643474,1,cd3cd28_n1000_remove2.csv
+gcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.2280807808781261,1,cd3cd28_n1000_remove2.csv
+gcm,Raf _||_ p38 | PKC,0.29758686242125487,1,cd3cd28_n1000_remove2.csv
+pcm,"Akt _||_ Erk | Mek, PKA",0.3478296004290464,1,cd3cd28_n1000_remove2.csv
+pcm,"Akt _||_ JNK | PKA, PKC",0.7077688645487265,1,cd3cd28_n1000_remove2.csv
+pcm,Akt _||_ PIP2 | PLCg,0.696964717462127,1,cd3cd28_n1000_remove2.csv
+pcm,Akt _||_ PIP2 | PIP3,0.4506135339378897,1,cd3cd28_n1000_remove2.csv
+pcm,Akt _||_ PLCg | PIP3,0.9642346915557187,1,cd3cd28_n1000_remove2.csv
+pcm,Akt _||_ Raf | PKC,0.6185128830627676,1,cd3cd28_n1000_remove2.csv
+pcm,"Akt _||_ p38 | JNK, PKC",0.15295145712480385,1,cd3cd28_n1000_remove2.csv
+pcm,"Akt _||_ p38 | PKA, PKC",0.10054516569839367,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ JNK | PKA, PKC",0.6065141628731177,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ JNK | Akt, PKA, Raf",0.3444899257311155,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ JNK | Mek, PKA",0.5731885270511761,1,cd3cd28_n1000_remove2.csv
+pcm,Erk _||_ PIP2 | PLCg,0.03914801325110484,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.1482240784567801,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.31631666293251515,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.18654881016138114,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.1903602982586775,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.146363351300689,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP2 | Mek, PKA",0.275772382311412,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.17378011764469292,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.8723146520111671,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.02812540554701637,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PIP3 | Mek, PKA",0.561186467564216,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.02823012850014328,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.4855034548435816,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Akt, PKA, Raf",0.7769486340501325,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.5385601094426578,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.7895925629873919,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PKC | Mek, PKA",0.5636343314508494,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.4018748582117979,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.9130077407868609,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.7068505113027415,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.09436871678692005,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.11184332680895881,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ PLCg | Mek, PKA",0.48242888767661596,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PKC",0.7834205542750212,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.44030486221710163,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.2992796633723892,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ Raf | Mek, PKA",0.5111710482420575,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ p38 | JNK, PKC",0.02792440746822289,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ p38 | PKA, PKC",0.020132773699218842,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ p38 | Akt, PKA, Raf",0.15492591973465109,1,cd3cd28_n1000_remove2.csv
+pcm,"Erk _||_ p38 | Mek, PKA",0.5002383275182195,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ Mek | Akt, Raf",0.7149100917117142,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ Mek | Akt, PKC",0.21156019768035583,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ Mek | PKA, PKC",0.8493924693420845,1,cd3cd28_n1000_remove2.csv
+pcm,JNK _||_ PIP2 | PLCg,0.37466559324680926,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.2908280358505724,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PIP2 | PKA, PKC",0.9800220659712781,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.5379119352657242,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PIP3 | PKA, PKC",0.29330092954934495,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.08351778623186168,1,cd3cd28_n1000_remove2.csv
+pcm,"JNK _||_ PLCg | PKA, PKC",0.6396039925096323,1,cd3cd28_n1000_remove2.csv
+pcm,JNK _||_ Raf | PKC,0.6910690330439049,1,cd3cd28_n1000_remove2.csv
+pcm,Mek _||_ PIP2 | PLCg,0.2866643417880611,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PIP2 | Akt, PKC",0.8218278675506003,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PIP2 | Akt, Raf",0.3262264651893516,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PIP3 | Akt, PLCg",0.022194395697153868,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PIP3 | Akt, PKC",0.6802517579301004,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PIP3 | Akt, Raf",0.791198037072083,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PKA | Akt, PIP3",0.1840079773425236,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PKA | Akt, PLCg",0.18138940504251566,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PKA | Akt, PKC",0.9242843771938009,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PKA | Akt, Raf",0.6691671466735116,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PKC | Akt, Raf",0.9476166135740367,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PLCg | Akt, PKC",0.8849601409472426,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ PLCg | Akt, Raf",0.6048806057627886,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ p38 | JNK, PKC",0.7901087154067681,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ p38 | PKA, PKC",0.5124391179430521,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ p38 | Akt, PKC",0.47163211924764936,1,cd3cd28_n1000_remove2.csv
+pcm,"Mek _||_ p38 | Akt, Raf",0.9114108694903085,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ PIP3 | PLCg,0.08925249697048565,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ PKA | PIP3,0.38783924523611135,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ PKA | PLCg,0.9641180555705301,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ PKC | PLCg,0.7775447098364479,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ Raf | PKC,0.9032815216242113,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ Raf | PLCg,0.1617444073020553,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP2 _||_ p38 | JNK, PKC",0.904954992285112,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP2 _||_ p38 | PKA, PKC",0.7125932621113834,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.7316542219230042,1,cd3cd28_n1000_remove2.csv
+pcm,PIP2 _||_ p38 | PLCg,0.18445408029631305,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP3 _||_ PKC | Akt, PLCg",0.7312614860114426,1,cd3cd28_n1000_remove2.csv
+pcm,PIP3 _||_ Raf | PKC,0.3177731186947498,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP3 _||_ Raf | Akt, PLCg",0.6173941335764983,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP3 _||_ p38 | JNK, PKC",0.12472153859521617,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP3 _||_ p38 | PKA, PKC",0.479054689629003,1,cd3cd28_n1000_remove2.csv
+pcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.04296526489518815,1,cd3cd28_n1000_remove2.csv
+pcm,"PKA _||_ PKC | Akt, PLCg",0.05472028373875848,1,cd3cd28_n1000_remove2.csv
+pcm,"PKA _||_ PKC | Akt, PIP3",0.74104463142637,1,cd3cd28_n1000_remove2.csv
+pcm,PKA _||_ PLCg | PIP3,0.8665659085678266,1,cd3cd28_n1000_remove2.csv
+pcm,PKA _||_ Raf | PKC,0.19128066644396458,1,cd3cd28_n1000_remove2.csv
+pcm,"PKA _||_ Raf | Akt, PLCg",0.0350311044393532,1,cd3cd28_n1000_remove2.csv
+pcm,"PKA _||_ Raf | Akt, PIP3",0.8797533286615531,1,cd3cd28_n1000_remove2.csv
+pcm,"PKA _||_ p38 | JNK, PKC",0.047960430639776286,1,cd3cd28_n1000_remove2.csv
+pcm,PLCg _||_ Raf | PKC,0.9266398687342753,1,cd3cd28_n1000_remove2.csv
+pcm,"PLCg _||_ p38 | JNK, PKC",0.9277436488147192,1,cd3cd28_n1000_remove2.csv
+pcm,"PLCg _||_ p38 | PKA, PKC",0.07001793717458482,1,cd3cd28_n1000_remove2.csv
+pcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.6577724677010313,1,cd3cd28_n1000_remove2.csv
+pcm,Raf _||_ p38 | PKC,0.9301623157938548,1,cd3cd28_n1000_remove2.csv
+gcm,"Akt _||_ Erk | Mek, PKA",0.7472109471797265,1,cd3cd28.csv
+gcm,"Akt _||_ JNK | PKA, PKC",0.5985326719972459,1,cd3cd28.csv
+gcm,Akt _||_ PIP2 | PLCg,0.37566649259089036,1,cd3cd28.csv
+gcm,Akt _||_ PIP2 | PIP3,0.0974245777612106,1,cd3cd28.csv
+gcm,Akt _||_ PLCg | PIP3,0.5019913910549341,1,cd3cd28.csv
+gcm,Akt _||_ Raf | PKC,0.7805816316105472,1,cd3cd28.csv
+gcm,"Akt _||_ p38 | JNK, PKC",0.6102564562449987,1,cd3cd28.csv
+gcm,"Akt _||_ p38 | PKA, PKC",0.476809311556756,1,cd3cd28.csv
+gcm,"Erk _||_ JNK | PKA, PKC",0.8641589318304355,1,cd3cd28.csv
+gcm,"Erk _||_ JNK | Akt, PKA, Raf",0.8609295563331937,1,cd3cd28.csv
+gcm,"Erk _||_ JNK | Mek, PKA",0.720534966120012,1,cd3cd28.csv
+gcm,Erk _||_ PIP2 | PLCg,0.8823934431486256,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.4100698876955997,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.18602043202860719,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.44634502986549496,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.34904890764012075,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.36141944820444005,1,cd3cd28.csv
+gcm,"Erk _||_ PIP2 | Mek, PKA",0.1472237183511197,1,cd3cd28.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.826297885286463,1,cd3cd28.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.3393003116479024,1,cd3cd28.csv
+gcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.20129744403999106,1,cd3cd28.csv
+gcm,"Erk _||_ PIP3 | Mek, PKA",0.31026031224115036,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.8081976739072103,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.7937746435456697,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Akt, PKA, Raf",0.41157034093728473,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.9514376437919655,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.26963288182755396,1,cd3cd28.csv
+gcm,"Erk _||_ PKC | Mek, PKA",0.28432404356942576,1,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.08741819360451741,1,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.0180170400652927,1,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.040223718394772234,1,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.009318749682572736,0.9039187192095554,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.05472163767278515,1,cd3cd28.csv
+gcm,"Erk _||_ PLCg | Mek, PKA",0.031876956600714546,1,cd3cd28.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PKC",0.8310981623045448,1,cd3cd28.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.7723945531464963,1,cd3cd28.csv
+gcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.8944317251125552,1,cd3cd28.csv
+gcm,"Erk _||_ Raf | Mek, PKA",0.6899073680472039,1,cd3cd28.csv
+gcm,"Erk _||_ p38 | JNK, PKC",0.6803640639214582,1,cd3cd28.csv
+gcm,"Erk _||_ p38 | PKA, PKC",0.4617854679121637,1,cd3cd28.csv
+gcm,"Erk _||_ p38 | Akt, PKA, Raf",0.9279572808332011,1,cd3cd28.csv
+gcm,"Erk _||_ p38 | Mek, PKA",0.7222611136979904,1,cd3cd28.csv
+gcm,"JNK _||_ Mek | Akt, Raf",0.5046172932220887,1,cd3cd28.csv
+gcm,"JNK _||_ Mek | Akt, PKC",0.6655034477576722,1,cd3cd28.csv
+gcm,"JNK _||_ Mek | PKA, PKC",0.16489710305257377,1,cd3cd28.csv
+gcm,JNK _||_ PIP2 | PLCg,0.08518459755535435,1,cd3cd28.csv
+gcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.9552715441398237,1,cd3cd28.csv
+gcm,"JNK _||_ PIP2 | PKA, PKC",0.40717110125465106,1,cd3cd28.csv
+gcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.6352560664203442,1,cd3cd28.csv
+gcm,"JNK _||_ PIP3 | PKA, PKC",0.7162913029413005,1,cd3cd28.csv
+gcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.3738918272260915,1,cd3cd28.csv
+gcm,"JNK _||_ PLCg | PKA, PKC",0.5211411632738342,1,cd3cd28.csv
+gcm,JNK _||_ Raf | PKC,0.07290304898977529,1,cd3cd28.csv
+gcm,Mek _||_ PIP2 | PLCg,0.04052500890327804,1,cd3cd28.csv
+gcm,"Mek _||_ PIP2 | Akt, PKC",0.9822964350612488,1,cd3cd28.csv
+gcm,"Mek _||_ PIP2 | Akt, Raf",0.1283805094929784,1,cd3cd28.csv
+gcm,"Mek _||_ PIP3 | Akt, PLCg",0.9918784255470284,1,cd3cd28.csv
+gcm,"Mek _||_ PIP3 | Akt, PKC",0.30913635729683375,1,cd3cd28.csv
+gcm,"Mek _||_ PIP3 | Akt, Raf",0.564938692515037,1,cd3cd28.csv
+gcm,"Mek _||_ PKA | Akt, PIP3",0.5001070746631944,1,cd3cd28.csv
+gcm,"Mek _||_ PKA | Akt, PLCg",0.10616184727291511,1,cd3cd28.csv
+gcm,"Mek _||_ PKA | Akt, PKC",0.11241662701857402,1,cd3cd28.csv
+gcm,"Mek _||_ PKA | Akt, Raf",0.11983928851992409,1,cd3cd28.csv
+gcm,"Mek _||_ PKC | Akt, Raf",0.3192269469396307,1,cd3cd28.csv
+gcm,"Mek _||_ PLCg | Akt, PKC",0.609720847875889,1,cd3cd28.csv
+gcm,"Mek _||_ PLCg | Akt, Raf",0.2758606657521099,1,cd3cd28.csv
+gcm,"Mek _||_ p38 | JNK, PKC",0.2061879161625958,1,cd3cd28.csv
+gcm,"Mek _||_ p38 | PKA, PKC",0.5557791015814975,1,cd3cd28.csv
+gcm,"Mek _||_ p38 | Akt, PKC",0.15292261315865696,1,cd3cd28.csv
+gcm,"Mek _||_ p38 | Akt, Raf",0.11143366413512157,1,cd3cd28.csv
+gcm,PIP2 _||_ PIP3 | PLCg,6.60296887004197e-4,0.0647090949264113,cd3cd28.csv
+gcm,PIP2 _||_ PKA | PIP3,0.08386611770852792,1,cd3cd28.csv
+gcm,PIP2 _||_ PKA | PLCg,0.5844837956274278,1,cd3cd28.csv
+gcm,PIP2 _||_ PKC | PLCg,0.26462463382639145,1,cd3cd28.csv
+gcm,PIP2 _||_ Raf | PKC,0.5285719352386167,1,cd3cd28.csv
+gcm,PIP2 _||_ Raf | PLCg,0.1264379635475371,1,cd3cd28.csv
+gcm,"PIP2 _||_ p38 | JNK, PKC",0.3489562678853545,1,cd3cd28.csv
+gcm,"PIP2 _||_ p38 | PKA, PKC",0.7458086524231944,1,cd3cd28.csv
+gcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.929287704313865,1,cd3cd28.csv
+gcm,PIP2 _||_ p38 | PLCg,0.35765667560810654,1,cd3cd28.csv
+gcm,"PIP3 _||_ PKC | Akt, PLCg",0.05971409019310203,1,cd3cd28.csv
+gcm,PIP3 _||_ Raf | PKC,0.12127813298364876,1,cd3cd28.csv
+gcm,"PIP3 _||_ Raf | Akt, PLCg",0.3702488388384291,1,cd3cd28.csv
+gcm,"PIP3 _||_ p38 | JNK, PKC",0.9608716118628351,1,cd3cd28.csv
+gcm,"PIP3 _||_ p38 | PKA, PKC",0.2573842566307667,1,cd3cd28.csv
+gcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.05230979145833292,1,cd3cd28.csv
+gcm,"PKA _||_ PKC | Akt, PLCg",0.18934157875463564,1,cd3cd28.csv
+gcm,"PKA _||_ PKC | Akt, PIP3",0.2752576108250129,1,cd3cd28.csv
+gcm,PKA _||_ PLCg | PIP3,0.8142898104180336,1,cd3cd28.csv
+gcm,PKA _||_ Raf | PKC,0.9499261662008003,1,cd3cd28.csv
+gcm,"PKA _||_ Raf | Akt, PLCg",0.3129850765409924,1,cd3cd28.csv
+gcm,"PKA _||_ Raf | Akt, PIP3",0.6108535429049335,1,cd3cd28.csv
+gcm,"PKA _||_ p38 | JNK, PKC",0.4767515581630123,1,cd3cd28.csv
+gcm,PLCg _||_ Raf | PKC,0.21329612612632987,1,cd3cd28.csv
+gcm,"PLCg _||_ p38 | JNK, PKC",0.9365038727146038,1,cd3cd28.csv
+gcm,"PLCg _||_ p38 | PKA, PKC",0.22299114827656785,1,cd3cd28.csv
+gcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.07948183350846894,1,cd3cd28.csv
+gcm,Raf _||_ p38 | PKC,0.08296953096125481,1,cd3cd28.csv
+pcm,"Akt _||_ Erk | Mek, PKA",0.5849429093418556,1,cd3cd28.csv
+pcm,"Akt _||_ JNK | PKA, PKC",0.14000526132321256,1,cd3cd28.csv
+pcm,Akt _||_ PIP2 | PLCg,0.019743740792198095,1,cd3cd28.csv
+pcm,Akt _||_ PIP2 | PIP3,0.5687601911915696,1,cd3cd28.csv
+pcm,Akt _||_ PLCg | PIP3,0.6168192263602522,1,cd3cd28.csv
+pcm,Akt _||_ Raf | PKC,0.20909951007060834,1,cd3cd28.csv
+pcm,"Akt _||_ p38 | JNK, PKC",0.7147703328727955,1,cd3cd28.csv
+pcm,"Akt _||_ p38 | PKA, PKC",0.7277340569463783,1,cd3cd28.csv
+pcm,"Erk _||_ JNK | PKA, PKC",0.6314871670718436,1,cd3cd28.csv
+pcm,"Erk _||_ JNK | Akt, PKA, Raf",0.08341253975735785,1,cd3cd28.csv
+pcm,"Erk _||_ JNK | Mek, PKA",0.6513945880996409,1,cd3cd28.csv
+pcm,Erk _||_ PIP2 | PLCg,0.1839028254249604,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, PKC",0.3119815990826409,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Akt, PIP3, Raf",0.3480862797749731,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, PKC",0.7680884588628814,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Akt, PKA, Raf",0.42971131796292084,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Akt, Mek, PIP3",0.9401493941966276,1,cd3cd28.csv
+pcm,"Erk _||_ PIP2 | Mek, PKA",0.6572737698866531,1,cd3cd28.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PLCg",0.19924964972830683,1,cd3cd28.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, PKC",0.06713579099213995,1,cd3cd28.csv
+pcm,"Erk _||_ PIP3 | Akt, PKA, Raf",0.8402515961457624,1,cd3cd28.csv
+pcm,"Erk _||_ PIP3 | Mek, PKA",0.054783331508175825,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Akt, PLCg, Raf",0.16051051722642296,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Akt, PIP3, Raf",0.9862815447949688,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Akt, PKA, Raf",0.7352888352251453,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PLCg",0.2721345246330259,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Akt, Mek, PIP3",0.8478240046163654,1,cd3cd28.csv
+pcm,"Erk _||_ PKC | Mek, PKA",0.9796548695055056,1,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, PKC",0.182550957108367,1,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Akt, PIP3, Raf",0.002253453473937239,0.21633153349797496,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, PKC",0.49762963946119265,1,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Akt, PKA, Raf",0.5622239987764038,1,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Akt, Mek, PIP3",0.5076470321922761,1,cd3cd28.csv
+pcm,"Erk _||_ PLCg | Mek, PKA",0.6929508956609844,1,cd3cd28.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PKC",0.920987561224603,1,cd3cd28.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PLCg",0.7171911489120627,1,cd3cd28.csv
+pcm,"Erk _||_ Raf | Akt, Mek, PIP3",0.5177658849115708,1,cd3cd28.csv
+pcm,"Erk _||_ Raf | Mek, PKA",0.930949269499397,1,cd3cd28.csv
+pcm,"Erk _||_ p38 | JNK, PKC",0.808891304311724,1,cd3cd28.csv
+pcm,"Erk _||_ p38 | PKA, PKC",0.5705395737217687,1,cd3cd28.csv
+pcm,"Erk _||_ p38 | Akt, PKA, Raf",0.9885016446510251,1,cd3cd28.csv
+pcm,"Erk _||_ p38 | Mek, PKA",0.011283620490922242,1,cd3cd28.csv
+pcm,"JNK _||_ Mek | Akt, Raf",0.4120294786462546,1,cd3cd28.csv
+pcm,"JNK _||_ Mek | Akt, PKC",0.669749737925793,1,cd3cd28.csv
+pcm,"JNK _||_ Mek | PKA, PKC",0.926927426502142,1,cd3cd28.csv
+pcm,JNK _||_ PIP2 | PLCg,0.30144745905278536,1,cd3cd28.csv
+pcm,"JNK _||_ PIP2 | Akt, PIP3, PKC",0.636332948153105,1,cd3cd28.csv
+pcm,"JNK _||_ PIP2 | PKA, PKC",0.07181843792254372,1,cd3cd28.csv
+pcm,"JNK _||_ PIP3 | Akt, PKA, PLCg",0.2070660916922702,1,cd3cd28.csv
+pcm,"JNK _||_ PIP3 | PKA, PKC",0.045937252690863795,1,cd3cd28.csv
+pcm,"JNK _||_ PLCg | Akt, PIP3, PKC",0.9572728810214748,1,cd3cd28.csv
+pcm,"JNK _||_ PLCg | PKA, PKC",0.9875475199064664,1,cd3cd28.csv
+pcm,JNK _||_ Raf | PKC,0.9162576750738278,1,cd3cd28.csv
+pcm,Mek _||_ PIP2 | PLCg,0.8446088082938257,1,cd3cd28.csv
+pcm,"Mek _||_ PIP2 | Akt, PKC",0.1346010069733603,1,cd3cd28.csv
+pcm,"Mek _||_ PIP2 | Akt, Raf",0.6123230832851775,1,cd3cd28.csv
+pcm,"Mek _||_ PIP3 | Akt, PLCg",0.82815027298743,1,cd3cd28.csv
+pcm,"Mek _||_ PIP3 | Akt, PKC",0.6245390105483881,1,cd3cd28.csv
+pcm,"Mek _||_ PIP3 | Akt, Raf",0.911647512993033,1,cd3cd28.csv
+pcm,"Mek _||_ PKA | Akt, PIP3",0.06222140352172667,1,cd3cd28.csv
+pcm,"Mek _||_ PKA | Akt, PLCg",0.3792393823387028,1,cd3cd28.csv
+pcm,"Mek _||_ PKA | Akt, PKC",0.9503474346997663,1,cd3cd28.csv
+pcm,"Mek _||_ PKA | Akt, Raf",0.9333988992377288,1,cd3cd28.csv
+pcm,"Mek _||_ PKC | Akt, Raf",0.41408512007435894,1,cd3cd28.csv
+pcm,"Mek _||_ PLCg | Akt, PKC",0.60195822029396,1,cd3cd28.csv
+pcm,"Mek _||_ PLCg | Akt, Raf",0.3639114081473934,1,cd3cd28.csv
+pcm,"Mek _||_ p38 | JNK, PKC",0.5668863529479834,1,cd3cd28.csv
+pcm,"Mek _||_ p38 | PKA, PKC",0.6791548199601093,1,cd3cd28.csv
+pcm,"Mek _||_ p38 | Akt, PKC",0.18378536806610446,1,cd3cd28.csv
+pcm,"Mek _||_ p38 | Akt, Raf",0.001964844965708812,0.19058996167375475,cd3cd28.csv
+pcm,PIP2 _||_ PIP3 | PLCg,0.0011017503920559557,0.10797153842148366,cd3cd28.csv
+pcm,PIP2 _||_ PKA | PIP3,0.13839654274775715,1,cd3cd28.csv
+pcm,PIP2 _||_ PKA | PLCg,0.6549482350952567,1,cd3cd28.csv
+pcm,PIP2 _||_ PKC | PLCg,0.7903183848263737,1,cd3cd28.csv
+pcm,PIP2 _||_ Raf | PKC,0.686487948004104,1,cd3cd28.csv
+pcm,PIP2 _||_ Raf | PLCg,0.8334242318835562,1,cd3cd28.csv
+pcm,"PIP2 _||_ p38 | JNK, PKC",0.8454019266759705,1,cd3cd28.csv
+pcm,"PIP2 _||_ p38 | PKA, PKC",0.48914414790956984,1,cd3cd28.csv
+pcm,"PIP2 _||_ p38 | Akt, PIP3, PKC",0.1534294771266913,1,cd3cd28.csv
+pcm,PIP2 _||_ p38 | PLCg,0.4387509690173237,1,cd3cd28.csv
+pcm,"PIP3 _||_ PKC | Akt, PLCg",0.12087693606616878,1,cd3cd28.csv
+pcm,PIP3 _||_ Raf | PKC,0.13143033799174275,1,cd3cd28.csv
+pcm,"PIP3 _||_ Raf | Akt, PLCg",0.7838712712907575,1,cd3cd28.csv
+pcm,"PIP3 _||_ p38 | JNK, PKC",0.41104218400448234,1,cd3cd28.csv
+pcm,"PIP3 _||_ p38 | PKA, PKC",0.9947497241283578,1,cd3cd28.csv
+pcm,"PIP3 _||_ p38 | Akt, PKA, PLCg",0.32604290766391353,1,cd3cd28.csv
+pcm,"PKA _||_ PKC | Akt, PLCg",0.34584704791412113,1,cd3cd28.csv
+pcm,"PKA _||_ PKC | Akt, PIP3",0.6304555464529819,1,cd3cd28.csv
+pcm,PKA _||_ PLCg | PIP3,0.5338516604003466,1,cd3cd28.csv
+pcm,PKA _||_ Raf | PKC,0.5226306632385327,1,cd3cd28.csv
+pcm,"PKA _||_ Raf | Akt, PLCg",0.9520725256655487,1,cd3cd28.csv
+pcm,"PKA _||_ Raf | Akt, PIP3",0.6729990781937637,1,cd3cd28.csv
+pcm,"PKA _||_ p38 | JNK, PKC",0.1975291637790143,1,cd3cd28.csv
+pcm,PLCg _||_ Raf | PKC,0.27102320044262584,1,cd3cd28.csv
+pcm,"PLCg _||_ p38 | JNK, PKC",0.6356240258737074,1,cd3cd28.csv
+pcm,"PLCg _||_ p38 | PKA, PKC",0.571624911245093,1,cd3cd28.csv
+pcm,"PLCg _||_ p38 | Akt, PIP3, PKC",0.13731588262974004,1,cd3cd28.csv
+pcm,Raf _||_ p38 | PKC,0.09441147498639813,1,cd3cd28.csv
