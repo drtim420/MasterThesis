@@ -15,23 +15,6 @@
 #  - The Sachs .xls files available (path configured below)
 # ---------------------------------------------------------------------------
 
-library(dotenv)
-
-# if you just updated .env and want to refresh in the SAME session:
-Sys.unsetenv("OPENAI_API_KEY")      # clear the old value
-dotenv::load_dot_env(".env")        # reload from file
-
-# quick sanity check (don’t print full key)
-nchar(Sys.getenv("OPENAI_API_KEY")) > 0
-
-
-
-
-# (optional sanity check)
-substr(Sys.getenv("OPENAI_API_KEY"), 1, 6)  # don't print full key
-
-
-
 # =========================
 # 0) Libraries & config
 # =========================
@@ -50,12 +33,19 @@ suppressPackageStartupMessages({
   library(comets)
 })
 
+# auto-load .env if present (safe no-op if missing)
+if (requireNamespace("dotenv", quietly = TRUE)) {
+  try(dotenv::load_dot_env(".env"), silent = TRUE)
+}
+
 set.seed(1)
 alpha <- 0.05
 TESTS <- c("gcm","pcm")
-DATA_PATH <- "~/Desktop/master_thesis/code/MasterThesis/one_shot_llm_dag_discovery/data"   # adjust if needed
+DATA_PATH <- "../data"   # adjust if needed
 SAVE_RESULTS <- TRUE
 RESULTS_DIR <- "../results"
+# Default model can be overridden via .env: OPENAI_MODEL=gpt-4o-mini (or any available chat model)
+MODEL <- Sys.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # =========================
 # 1) Sachs names + DAG helpers (from paper, kept identical in spirit)
@@ -150,7 +140,7 @@ stop_if_no_key <- function() {
   }
 }
 
-agent_propose_adj <- function(variables, model = "gpt-4o-mini", temperature = 0) {
+agent_propose_adj <- function(variables, model = MODEL, temperature = 0) {
   stop_if_no_key()
   # Build prompts (strict JSON output)
   system_msg <- paste(
@@ -179,9 +169,21 @@ agent_propose_adj <- function(variables, model = "gpt-4o-mini", temperature = 0)
     req_body_json(body) |>
     req_perform()
   
-  resp_json <- resp_body_json(resp, simplifyVector = TRUE)
-  txt <- resp_json$choices[[1]]$message$content
-  
+  resp_json <- resp_body_json(resp, simplifyVector = FALSE)
+  # API error handling
+  if (!is.null(resp_json$error)) {
+    stop(paste0("OpenAI API error: ", resp_json$error$message))
+  }
+  # Robust extraction of assistant content
+  choice1 <- resp_json$choices[[1]]
+  content <- choice1$message$content
+  if (is.list(content)) {
+    # Some responses may return content as a list of parts
+    content <- paste(vapply(content, function(part) {
+      if (!is.null(part$text)) part$text else if (!is.null(part$content)) part$content else ""
+    }, character(1)), collapse = "")
+  }
+  txt <- as.character(content)
   
   # Parse JSON
   out <- try(jsonlite::fromJSON(txt), silent = TRUE)
@@ -261,7 +263,7 @@ run_once <- function(data) {
   
   # Agent proposal
   message("Requesting agent adjacency matrix...")
-  agent_out <- agent_propose_adj(vars, model = "gpt-5-thinking", temperature = 0)
+  agent_out <- agent_propose_adj(vars, model = "gpt-4o-mini", temperature = 0)
   A_agent <- agent_out$adjacency
   # Validate (retry once if needed)
   ok <- FALSE
@@ -270,7 +272,7 @@ run_once <- function(data) {
     message("Retrying agent once with error hint...")
     # Re-prompt with error hint (lightweight)
     # NOTE: For simplicity we just call again; a more advanced retry would include the error message in the prompt.
-    agent_out <- agent_propose_adj(vars, model = "gpt-5-thinking", temperature = 0)
+    agent_out <- agent_propose_adj(vars, model = "gpt-4o-mini", temperature = 0)
     A_agent <- agent_out$adjacency
     validate_adj(A_agent, vars) # if fails -> error
   }
@@ -323,4 +325,61 @@ summary_tbl <- run_out$results |>
             n_violations = sum(adj.p.value < alpha), .groups = "drop")
 print(summary_tbl)
 
-# End of script
+# =========================
+# 6) LLM interpretation of the summary (prints to console)
+# =========================
+llm_interpret <- function(summary_tbl, alpha = 0.05,
+                          model = Sys.getenv("OPENAI_INTERPRET_MODEL", unset = MODEL),
+                          temperature = 0) {
+  stop_if_no_key()
+  # Prepare a clean text block of the tibble for the LLM
+  summary_txt <- paste(capture.output(print(summary_tbl, n = Inf)), collapse = "\n")
+  # Also pass the schema description so the model doesn't guess
+  schema_txt <- paste(
+    "Columns: graph (Agent/Consensus), test (gcm/pcm),",
+    "n_cis_tested (number of CI constraints tested),",
+    "falsified (TRUE/FALSE after Holm at alpha)",
+    sprintf("alpha = %.3f", alpha),
+    "n_violations (count of adjusted p-values < alpha)."
+  )
+  sys <- paste(
+    "You are a concise, stats-savvy assistant. Interpret causal DAG falsification results.",
+    "Be precise, avoid speculation, and explain what 'not falsified' means.")
+  usr <- paste0(
+    "Interpret the following R summary table from a Lukas Kook CI (COMETS) falsification pipeline on the Sachs observational dataset.\n\n",
+    schema_txt, "\n\n",
+    summary_txt, "\n\n",
+    "Instructions: Provide 4–6 bullet points. Include: (1) whether any graph was falsified per test;",
+    " (2) how many CIs were tested; (3) any notable differences between Agent and Consensus;",
+    " (4) a short caveat that 'not falsified' does not prove correctness."
+  )
+  body <- list(
+    model = model,
+    temperature = temperature,
+    messages = list(
+      list(role = "system", content = sys),
+      list(role = "user", content = usr)
+    )
+  )
+  req <- request("https://api.openai.com/v1/chat/completions") |>
+    req_headers(Authorization = paste("Bearer", Sys.getenv("OPENAI_API_KEY")),
+                "Content-Type" = "application/json") |>
+    req_body_json(body)
+  resp <- req_perform(req)
+  resp_json <- resp_body_json(resp, simplifyVector = FALSE)
+  if (!is.null(resp_json$error)) stop(paste0("OpenAI API error: ", resp_json$error$message))
+  choice1 <- resp_json$choices[[1]]
+  content <- choice1$message$content
+  if (is.list(content)) {
+    content <- paste(vapply(content, function(part) {
+      if (!is.null(part$text)) part$text else if (!is.null(part$content)) part$content else ""
+    }, character(1)), collapse = "")
+  }
+  cat("\n----- LLM interpretation -----\n")
+  cat(as.character(content), sep = "\n")
+  cat("\n------------------------------\n")
+}
+
+
+# Call the interpreter
+llm_interpret(summary_tbl, alpha = alpha)
