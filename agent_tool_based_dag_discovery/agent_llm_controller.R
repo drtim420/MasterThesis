@@ -217,12 +217,4 @@ run_llm_agent <- function(data, variables, max_steps = 8, alpha = 0.05,
   
 }
 
-# --------------------------- Example usage -----------------------------------
-# source("R/tools_agent_LK.R")
-# D_obs <- read_data(int = "none", path = "../data")
-# out <- run_llm_agent(D_obs, variables = colnames(D_obs), max_steps = 8, alpha = 0.05)
-# out$last_results %>% dplyr::group_by(test) %>% dplyr::summarise(
-#   n_cis_tested = unique(n_cis_tested),
-#   falsified = any(adj.p.value < 0.05),
-#   n_violations = sum(adj.p.value < 0.05)
-# )
+

@@ -1,13 +1,9 @@
 # agent_tool_based_dag_discovery
 
-# Agentic DAG Tools for LK/COMETS Falsification (single dataset)
-# -----------------------------------------------------------------------------
-# This file defines a clean toolbelt of pure R functions and a small controller
-# to run a propose -> test -> (optional) refine loop while keeping the testing
-# identical to Lukas Kook's paper (COMETS GCM/PCM with Holm correction).
-# -----------------------------------------------------------------------------
+# Agentic DAG Tools for DAG Falsification 
 
-# Dependencies ----------------------------------------------------------------
+
+
 needed <- c("jsonlite","dagitty","bnlearn","pcalg","httr2","tidyverse","readxl","comets")
 miss <- setdiff(needed, rownames(installed.packages()))
 if (length(miss)) install.packages(miss)
@@ -30,11 +26,11 @@ if (requireNamespace("dotenv", quietly = TRUE)) {
 library(dotenv)
 dotenv::load_dot_env("~/Desktop/master_thesis/code/MasterThesis/one_shot_llm_dag_discovery/.env")
 
-# Config ----------------------------------------------------------------------
+# Config 
 alpha_default <- 0.05
 TESTS_DEFAULT <- c("gcm","pcm")
-MODEL <- Sys.getenv("OPENAI_MODEL", unset = "gpt-4o-mini")        # for propose
-EDIT_MODEL <- Sys.getenv("OPENAI_EDIT_MODEL", unset = MODEL)        # for edits
+MODEL <- Sys.getenv("OPENAI_MODEL", unset = "gpt-4o-mini")        
+EDIT_MODEL <- Sys.getenv("OPENAI_EDIT_MODEL", unset = MODEL)        # for edits, which we don't use currently in the pipeline
 
 # Utility: stop if no API key present
 stop_if_no_key <- function() {
@@ -43,10 +39,10 @@ stop_if_no_key <- function() {
   }
 }
 
-# Sachs variable names (order must match data columns)
+# Sachs variable names, order match data columns
 nms <- c("Raf","Mek","PLCg","PIP2","PIP3","Erk","Akt","PKA","PKC","p38","JNK")
 
-# Baseline DAGs + IO -----------------------------------------------------------
+# Baseline DAGs 
 get_dag <- function(which = c("consensus","sachs"), int = c("none","Akt","PIP2","Erk","PKC","PIP3")) {
   which <- match.arg(which); int <- match.arg(int)
   consensus <- matrix(c(
@@ -100,10 +96,10 @@ adj2dag <- function(adj_matrix) {
   dagitty(paste(dag_string, "}"))
 }
 
-# ---------------------------- Tools (pure functions) -------------------------
+# Tools 
 
-# 1) Propose adjacency matrix via LLM -----------------------------------------
-# Input: variables (character vector)
+# Propose adjacency matrix via LLM 
+# Input: variables 
 # Output: list(variables, adjacency (p x p numeric matrix), raw json)
 tool_propose_matrix <- function(variables, model = MODEL, temperature = 0) {
   stop_if_no_key()
@@ -144,7 +140,7 @@ tool_propose_matrix <- function(variables, model = MODEL, temperature = 0) {
   list(variables = out$variables, adjacency = A, raw = txt)
 }
 
-# 2) Validate adjacency matrix -------------------------------------------------
+# 2) Validate adjacency matrix 
 # Returns list(ok=TRUE/FALSE, errors=character(), dag=dagitty or NULL)
 tool_validate_matrix <- function(A, variables) {
   errs <- c()
@@ -167,14 +163,14 @@ tool_validate_matrix <- function(A, variables) {
   list(ok = ok, errors = errs, dag = dag)
 }
 
-# 3) Extract testable CIs (|Z| > 0) -------------------------------------------
+# 3) Extract testable CIs (|Z| > 0) 
 # Returns a list of CI objects as given by dagitty (each has $X,$Y,$Z)
 tool_extract_cis <- function(dag) {
   cis <- impliedConditionalIndependencies(dag)
   cis[unlist(lapply(cis, function(x) length(x$Z) > 0))]
 }
 
-# 4) LK/COMETS tests on one dataset -------------------------------------------
+# 4) LK/COMETS tests on one dataset
 # Returns tidy tibble with columns: test, n_cis_tested, falsified, CI, p.value, adj.p.value
 tool_lk_test <- function(data, cis, test = c("gcm","pcm"), alpha = alpha_default) {
   test <- match.arg(test)
@@ -192,7 +188,7 @@ tool_lk_test <- function(data, cis, test = c("gcm","pcm"), alpha = alpha_default
          CI = sapply(cis, paste), p.value = as.numeric(pv), adj.p.value = as.numeric(adjp))
 }
 
-# 5) Decide across tests -------------------------------------------------------
+# 5) Decide across tests 
 # Input: list of tibble rows for each test; Output: compact decision list
 tool_decide <- function(results_by_test) {
   tib <- bind_rows(results_by_test)
@@ -205,7 +201,7 @@ tool_decide <- function(results_by_test) {
 }
 
 if (FALSE) {
-# 6) Suggest edits via LLM -----------------------------------------------------
+# 6) Suggest edits via LLM 
 # Input: adjacency, variables, violations (tibble with CI and adj.p.value), budget_k
 # Output: data.frame(op, from, to) with op in {add, remove, reverse}
 tool_suggest_edits <- function(adjacency, variables, violations, budget_k = 3,
@@ -253,7 +249,7 @@ tool_suggest_edits <- function(adjacency, variables, violations, budget_k = 3,
 }
 }
 
-# 7) Apply edits safely --------------------------------------------------------
+# 7) Apply edits safely 
 # Returns updated adjacency if valid and acyclic; errors if invalid
 tool_apply_edits <- function(adjacency, variables, edits) {
   A <- adjacency
@@ -279,7 +275,7 @@ tool_apply_edits <- function(adjacency, variables, edits) {
   A
 }
 
-# ---- Improved LLM interpreter for LK results --------------------------------
+# Improved LLM interpreter for LK results 
 llm_interpret_results <- function(results_tbl,
                                   adjacency = NULL,
                                   alpha = 0.05,
@@ -320,13 +316,13 @@ llm_interpret_results <- function(results_tbl,
   # System guardrails: CI means conditional independence — never confidence interval.
   sys <- paste(
     "You are a concise, stats-savvy assistant.",
-    "Context: LK falsification with COMETS (GCM/PCM) tests of DAG-implied conditional independencies (CIs) with Holm correction.",
+    "Context: Lukas Kook falsification with COMETS (GCM/PCM) tests of DAG-implied conditional independencies (CIs) with Holm correction.",
     "CRITICAL TERMINOLOGY RULES:",
     "- 'CI' means 'conditional independence'.",
     "- DO NOT mention 'confidence intervals' anywhere.",
     "STYLE:",
     "- Return 5 bullet points.",
-    "- Use short bolded labels (e.g., **Verdict**, **Scope**, **Evidence**, **Caveats**, **Next**).",
+    "- Use short bolded labels (e.g., Verdict, Scope, Evidence, Caveats, Next).",
     sep = "\n"
   )
   
@@ -382,18 +378,3 @@ llm_interpret_results <- function(results_tbl,
   invisible(out)
 }
 
-
-# ---------------------------- Example usage (single dataset) -----------------
-# NOTE: Uncomment to run in your project after setting up .env and data path.
-#
-DATA_PATH <- "~/Desktop/master_thesis/code/MasterThesis/agent_tool_based_dag_discovery/data"  # adjust as needed
-D_obs <- read_data(int = "none", path = DATA_PATH)
-stopifnot(identical(colnames(D_obs), nms))
-#
-# # One-shot (max_iter = 0)
-# out0 <- agent_loop(D_obs, variables = nms, max_iter = 0, edit_budget = 3)
-# print(out0$summary)
-#
-# # Agentic (up to 2 refinement rounds)
-out2 <- agent_loop(D_obs, variables = nms, max_iter = 2, edit_budget = 3)
-print(out2$summary)

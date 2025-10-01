@@ -1,23 +1,12 @@
 # One-shot LLM DAG -> LK (Kook) CI testing pipeline (single dataset, no blinding)
-# ---------------------------------------------------------------------------
-# This script:
-#  1) Reads ONE observational dataset (Sachs proteins).
-#  2) Calls an LLM to propose a DAG as a BINARY ADJACENCY MATRIX given ONLY the variable names.
-#  3) Validates the matrix (shape, binary, diag=0, acyclic).
-#  4) Tests the agent DAG using the EXACT LK/Kook workflow (COMETS GCM/PCM + Holm),
-#     identical to the paper's approach for CI generation and testing.
-#  5) Runs the same test for the Consensus DAG as a baseline.
-#
-# Requirements:
-#  - R >= 4.2
-#  - Packages: jsonlite, dagitty, bnlearn, pcalg, httr2, comets, tidyverse, readxl
-#  - OpenAI API key in env: Sys.setenv(OPENAI_API_KEY = "...")
-#  - The Sachs .xls files available (path configured below)
-# ---------------------------------------------------------------------------
 
-# =========================
-# 0) Libraries & config
-# =========================
+#  Reads ONE observational dataset 
+#  Calls an LLM to propose a DAG as a BINARY ADJACENCY MATRIX given ONLY the variable names.
+#  Validates the matrix (shape, binary, diag=0, acyclic).
+#  Tests the agent DAG using the EXACT LK/Kook workflow (COMETS GCM/PCM + Holm)
+#  Runs the same test for the Consensus DAG as a baseline.
+
+
 needed <- c("jsonlite","dagitty","bnlearn","pcalg","httr2","tidyverse","readxl","comets")
 miss <- setdiff(needed, rownames(installed.packages()))
 if (length(miss)) install.packages(miss)
@@ -41,15 +30,14 @@ if (requireNamespace("dotenv", quietly = TRUE)) {
 set.seed(1)
 alpha <- 0.05
 TESTS <- c("gcm","pcm")
-DATA_PATH <- "../data"   # adjust if needed
+DATA_PATH <- "../data"   
 SAVE_RESULTS <- TRUE
 RESULTS_DIR <- "../results"
-# Default model can be overridden via .env: OPENAI_MODEL=gpt-4o-mini (or any available chat model)
 MODEL <- Sys.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
-# =========================
-# 1) Sachs names + DAG helpers (from paper, kept identical in spirit)
-# =========================
+
+# Sachs names + DAG helpers 
+
 nms <- c(
   "Raf", "Mek", "PLCg", "PIP2", "PIP3", "Erk", "Akt", "PKA", "PKC",
   "p38", "JNK"
@@ -131,9 +119,9 @@ adj2dag <- function(adj_matrix) {
   dagitty(paste(dag_string, "}"))
 }
 
-# =========================
+
 # 2) Agent: propose adjacency matrix (LLM)
-# =========================
+
 stop_if_no_key <- function() {
   if (!nzchar(Sys.getenv("OPENAI_API_KEY"))) {
     stop("Please set OPENAI_API_KEY via Sys.setenv(OPENAI_API_KEY='...')", call. = FALSE)
@@ -197,9 +185,9 @@ agent_propose_adj <- function(variables, model = MODEL, temperature = 0) {
   list(variables = out$variables, adjacency = A, raw = txt)
 }
 
-# =========================
-# 3) Validation: adjacency matrix must be a DAG
-# =========================
+
+# Validation: adjacency matrix must be a DAG
+
 validate_adj <- function(A, variables) {
   p <- length(variables)
   if (!is.matrix(A)) stop("Adjacency is not a matrix.")
@@ -216,10 +204,10 @@ validate_adj <- function(A, variables) {
   invisible(TRUE)
 }
 
-# =========================
-# 4) LK/Kook testing (COMETS) on ONE dataset
-# =========================
-# Extract testable CIs exactly like in the shared paper code: keep |Z| > 0
+
+# LK/Kook testing (COMETS) on ONE dataset
+
+# Extract testable CIs 
 extract_cis <- function(dag) {
   cis <- impliedConditionalIndependencies(dag)
   # Keep only those with non-empty conditioning set
@@ -295,7 +283,7 @@ run_once <- function(data) {
   out <- bind_rows(res_agent, res_cons) |>
     relocate(graph, test, n_cis_tested, falsified, CI, p.value, adj.p.value)
   
-  # Save artifacts
+  
   if (SAVE_RESULTS) {
     if (!dir.exists(RESULTS_DIR)) dir.create(RESULTS_DIR, recursive = TRUE)
     write_csv(out, file.path(RESULTS_DIR, "one_shot_agent_vs_consensus.csv"))
@@ -309,9 +297,8 @@ run_once <- function(data) {
   )
 }
 
-# =========================
-# 5) RUN (single observational dataset)
-# =========================
+
+
 # Load the observational dataset (no intervention)
 D_obs <- read_data(int = "none", path = DATA_PATH)
 
@@ -325,9 +312,9 @@ summary_tbl <- run_out$results |>
             n_violations = sum(adj.p.value < alpha), .groups = "drop")
 print(summary_tbl)
 
-# =========================
-# 6) LLM interpretation of the summary (prints to console)
-# =========================
+
+# LLM interpretation of the summary (prints to console)
+
 llm_interpret <- function(summary_tbl, alpha = 0.05,
                           model = Sys.getenv("OPENAI_INTERPRET_MODEL", unset = MODEL),
                           temperature = 0) {
