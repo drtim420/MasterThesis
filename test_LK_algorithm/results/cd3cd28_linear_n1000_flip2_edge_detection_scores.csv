@@ -1,5 +1,0 @@
-from,to,type,edge_label,n_related,score
-Akt,PKC,flipped,Akt→PKC,5,5
-PKA,Akt,flipped,PKA→Akt,7,7
-PKC,Akt,added,PKC→Akt,5,5
-Akt,PKA,added,Akt→PKA,7,7
