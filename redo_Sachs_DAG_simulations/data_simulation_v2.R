@@ -136,9 +136,7 @@ cis_with_Z <- function(amat) {
   cis <- dagitty::impliedConditionalIndependencies(g)
   cis[vapply(cis, function(x) length(x$Z) > 0, logical(1))]
 }
-##########
-## logical(1) verantwortlich für non overlap? non overlap in general mit Bsp.
-##########
+
 
 dag <- adj2dag(get_sachs_amat())    
 cis <- impliedConditionalIndependencies(dag)
