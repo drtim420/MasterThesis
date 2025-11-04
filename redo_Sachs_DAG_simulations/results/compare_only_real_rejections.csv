@@ -1,0 +1,3 @@
+test,CI,adjp_real,adjp_sim,rej_real,rej_sim
+pcm,"JNK _||_ p38 | PKA, PKC",5.8557457993657636e-8,1,TRUE,FALSE
+gcm,"JNK _||_ p38 | PKA, PKC",2.818471085119789e-5,1,TRUE,FALSE

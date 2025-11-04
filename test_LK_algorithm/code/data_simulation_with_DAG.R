@@ -28,7 +28,9 @@ get_dag <- function() {
   M <- add(M,"Akt","Mek"); M <- add(M,"Akt","PKC")
   M
 }
-
+#
+#plot graph
+#
 # Checks acyclicity using igraph::is_dag(...).
 is_dag_mat <- function(A) {
   igraph::is_dag(igraph::graph_from_adjacency_matrix(A, mode = "directed"))
@@ -154,6 +156,7 @@ generate_dataset <- function(n = 1000, seed = 42,
                              suffix = NULL,
                              save_graph_files = TRUE) {
   amat0 <- get_dag()
+  # plot dag
   amat  <- perturb_dag(amat0, add = add, remove = remove, flip = flip, seed = seed)
   dat   <- simulate_from_dag(amat, n = n, seed = seed)
   
@@ -177,6 +180,8 @@ generate_dataset <- function(n = 1000, seed = 42,
   
   invisible(list(amat_true = amat0, amat_used = amat, data = dat))
 }
+
+#plot(dag)
 
 # (B) Generate many datasets for power curves: n_grid × reps
 generate_grid <- function(n_grid = c(200, 500, 1000),
@@ -239,4 +244,144 @@ generate_dataset(
   path = "../data",
   save_graph_files = TRUE        # also writes _edges.csv and _dagitty.txt
 )
+
+
+
+
+
+
+
+# short and controlled version
+
+## ======================
+#Perturb & Detect (linear model, traceable)
+## ======================
+
+
+plot_dag_adj <- function(amat, file = NULL) {
+  g <- adj2dag(amat)
+  if (is.null(file)) {
+    plot(g)
+  } else {
+    png(file, width = 1000, height = 800)
+    plot(g)
+    dev.off()
+  }
+}
+
+edges_df <- function(amat) {
+  el <- which(amat == 1, arr.ind = TRUE)
+  if (!nrow(el)) return(data.frame(from=character(), to=character()))
+  data.frame(from = rownames(amat)[el[,1]],
+             to   = colnames(amat)[el[,2]])
+}
+
+diff_edges <- function(before, after) {
+  # before/after: data.frames with columns from,to
+  suppressWarnings({
+    added   <- dplyr::anti_join(after,  before, by = c("from","to"))
+    removed <- dplyr::anti_join(before, after,  by = c("from","to"))
+  })
+  # flips = where reverse appears
+  flips <- merge(added, transform(removed, from2 = to, to2 = from),
+                 by.x=c("from","to"), by.y=c("from2","to2"))
+  if (nrow(flips)) {
+    flipped <- data.frame(from = flips$to, to = flips$from)
+    added   <- dplyr::anti_join(added,   flipped, by=c("from","to"))
+    removed <- dplyr::anti_join(removed, flipped, by=c("from","to"))
+  } else flipped <- added[0,]
+  list(added = added, removed = removed, flipped = flipped)
+}
+
+cis_with_Z <- function(amat) {
+  g <- adj2dag(amat)
+  cis <- impliedConditionalIndependencies(g)
+  cis[vapply(cis, function(x) length(x$Z) > 0, logical(1))]
+}
+ci_keys <- function(cis) sapply(cis, paste)
+compare_ci_sets <- function(amat_true, amat_alt) {
+  c_true <- cis_with_Z(amat_true); k_true <- ci_keys(c_true)
+  c_alt  <- cis_with_Z(amat_alt);  k_alt  <- ci_keys(c_alt)
+  list(only_in_true = setdiff(k_true, k_alt),
+       only_in_alt  = setdiff(k_alt,  k_true),
+       in_both      = intersect(k_true, k_alt))
+}
+
+# simple linear SEM consistent with DAG
+simulate_linear_from_dag <- function(amat, n = 1000, seed = 1L,
+                                     w_mean = 0.8, w_sd = 0.2, noise_sd = 1) {
+  set.seed(seed)
+  stopifnot(all(rownames(amat) == colnames(amat)))
+  vars <- rownames(amat)
+  g <- igraph::graph_from_adjacency_matrix(amat, mode="directed")
+  stopifnot(igraph::is_dag(g))
+  order <- igraph::as_ids(igraph::topo_sort(g, mode="out"))
+  X <- matrix(0, n, length(vars)); colnames(X) <- vars
+  for (v in order) {
+    parents <- vars[which(amat[, v]==1L)]
+    if (!length(parents)) {
+      X[, v] <- rnorm(n)  # roots
+    } else {
+      w <- rnorm(length(parents), w_mean, w_sd)  # one weight per parent (fixed across rows)
+      mu <- as.matrix(X[, parents, drop=FALSE]) %*% w
+      X[, v] <- as.numeric(mu) + rnorm(n, 0, noise_sd)
+    }
+  }
+  as.data.frame(X)[, nms, drop=FALSE]
+}
+
+# --- experiment parameters ---
+out_path <- "../data"
+dir.create(out_path, showWarnings = FALSE, recursive = TRUE)
+
+n_samples <- 1000
+seed_sim  <- 101
+flip_k    <- 2                     # number of edge flips to introduce
+basename <- .sachs_base("none")    # "cd3cd28"
+suffix   <- paste0("linear_n", n_samples, "_flip", flip_k)
+
+# --- 1) true DAG (original), plot & save dagitty text ---
+amat_true <- get_dag()
+plot_dag_adj(amat_true, file.path(out_path, paste0(basename, "_TRUE.png")))
+writeLines(as.character(adj2dag(amat_true)),
+           file.path(out_path, paste0(basename, "_TRUE_dagitty.txt")))
+
+# --- 2) perturb DAG (flip a few edges), plot & save ---
+amat_alt <- perturb_dag(amat_true, flip = flip_k, seed = seed_sim)
+plot_dag_adj(amat_alt,  file.path(out_path, paste0(basename, "_PERTURBED.png")))
+writeLines(as.character(adj2dag(amat_alt)),
+           file.path(out_path, paste0(basename, "_PERTURBED_dagitty.txt")))
+
+# --- 3) log which edges changed ---
+e_true <- edges_df(amat_true)
+e_alt  <- edges_df(amat_alt)
+chg    <- diff_edges(e_true, e_alt)
+readr::write_csv(chg$added,   file.path(out_path, paste0(basename, "_", suffix, "_ADDED.csv")))
+readr::write_csv(chg$removed, file.path(out_path, paste0(basename, "_", suffix, "_REMOVED.csv")))
+readr::write_csv(chg$flipped, file.path(out_path, paste0(basename, "_", suffix, "_FLIPPED.csv")))
+
+# (optional) 4) compare CI sets: what statements changed?
+ci_diff <- compare_ci_sets(amat_true, amat_alt)
+writeLines(ci_diff$only_in_true, file.path(out_path, paste0(basename, "_", suffix, "_CI_only_in_TRUE.txt")))
+writeLines(ci_diff$only_in_alt,  file.path(out_path, paste0(basename, "_", suffix, "_CI_only_in_PERTURBED.txt")))
+
+# --- 5) simulate LINEAR data from the PERTURBED DAG and save ---
+dat_lin <- simulate_linear_from_dag(amat_alt, n = n_samples, seed = seed_sim)
+csv_path <- write_dataset(dat_lin, path = out_path, base = basename, suffix = suffix)
+message("Wrote: ", csv_path)
+
+
+
+
+
+
+## Erkenntnis: Anderer DAG kann auch zu gleichen CI's führen! daher nicht immer widerlegt, wenn dag anders wird
+
+
+
+
+
+
+
+
 

@@ -1,0 +1,5 @@
+from,to,type,edge_label,n_related,score
+Akt,PKC,flipped,Akt→PKC,0,0
+PKA,Akt,flipped,PKA→Akt,0,0
+PKC,Akt,added,PKC→Akt,0,0
+Akt,PKA,added,Akt→PKA,0,0

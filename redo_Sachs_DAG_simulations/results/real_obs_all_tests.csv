@@ -1,0 +1,13 @@
+test,X,Y_list,Z_list,CI,p.value,adj.p.value,rejected
+gcm,Akt,,,Akt _||_ Mek | Erk,0.3356237077796841,1,FALSE
+gcm,Akt,,,"Akt _||_ PKC | JNK, Mek, PKA, Raf, p38",0.7125687651962778,1,FALSE
+gcm,Akt,,,Akt _||_ Raf | Mek,0.14571969210152036,0.7285984605076018,FALSE
+gcm,Akt,,,Akt _||_ Raf | Erk,0.7589341518300212,1,FALSE
+gcm,Erk,,,"Erk _||_ PKC | JNK, Mek, PKA, Raf, p38",0.24909879082825137,0.9963951633130055,FALSE
+gcm,Erk,,,Erk _||_ Raf | Mek,0.10029835664103492,0.6017901398462095,FALSE
+pcm,Akt,,,Akt _||_ Mek | Erk,0.7296042642306029,1,FALSE
+pcm,Akt,,,"Akt _||_ PKC | JNK, Mek, PKA, Raf, p38",0.18245767947154534,0.9122883973577267,FALSE
+pcm,Akt,,,Akt _||_ Raf | Mek,0.3747237933966582,1,FALSE
+pcm,Akt,,,Akt _||_ Raf | Erk,0.04383824971284167,0.26302949827705,FALSE
+pcm,Erk,,,"Erk _||_ PKC | JNK, Mek, PKA, Raf, p38",0.8944136264862053,1,FALSE
+pcm,Erk,,,Erk _||_ Raf | Mek,0.7111181614961104,1,FALSE
