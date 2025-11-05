@@ -765,7 +765,7 @@ markov_equivalent <- function(A1, A2){
        markov_equivalent = same_skel && same_vs)
 }
 
-# Main: suggest & test orientations for each rejected CI pair
+# suggest & test orientations for each rejected CI pair
 suggest_and_test_orientations <- function(viol_tbl, amat0, dat, tests = c("gcm","pcm"), alpha = 0.05) {
   stopifnot("CI" %in% names(viol_tbl))
   cand_pairs <- pairs_from_rejections(viol_tbl$CI)
@@ -861,10 +861,10 @@ out$recommendation       %>% dplyr::arrange(pair)
 
 
 
-################################################################################
+#################################################################################
 ## now we use the SACHS DAG and take away an edge.
 ## the data is from the simulations with the SACHS dag, so it should reject the CI
-################################################################################
+#################################################################################
 
 ## Simulate from the original DAG, then remove Akt—Erk and re-test
 
