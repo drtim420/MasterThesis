@@ -331,6 +331,9 @@ run_ci_tests <- function(amat, dat, tests = c("gcm", "pcm"), alpha = 0.05) {
 simulate_linear_from_dag <- function(amat, n, seed = 1,
                                      w_mean = 0.8, w_sd = 0.2,
                                      noise_sd = 1.0) {
+  # amat = 
+  # n = 10
+
   set.seed(seed)
   stopifnot(all(rownames(amat) == colnames(amat)))
   vars <- rownames(amat)
