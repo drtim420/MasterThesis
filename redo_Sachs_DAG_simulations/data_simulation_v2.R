@@ -537,8 +537,9 @@ plot_sachs_with_edge_weights(dag_circ, edge_weights = sim_true$weights,
 
 
 
-## now we are testing beyond lukas kook: what results do we get if we test every CI
 
+
+## now we are testing beyond lukas kook: what results do we get if we test every CI
 # TEST ALL IMPLIED CIs (not just the reduced basis)
 
 
