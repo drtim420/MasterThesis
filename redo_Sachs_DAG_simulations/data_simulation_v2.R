@@ -967,3 +967,83 @@ cat("\nNewly implied CIs with test outcomes (after edge removal):\n")
 print(added_tbl, n = nrow(added_tbl))
 
 
+
+
+################################################################################
+## additional edge Erk -> PIP3, then we simulate data from it, 
+## we use old DAG without the edge and test 
+## if we can find the (Erk, PIP3) CI statement
+################################################################################
+
+set.seed(2025)
+
+# 1) Basis-DAG und Beobachtungs-Anzahl wie zuvor
+amat_base <- get_sachs_amat()
+dat_real  <- read_sachs_observational(data_path)
+
+# 2) Erweiterter DAG: zusätzlichen Pfeil Erk -> PIP3 einfügen
+amat_ext <- amat_base
+amat_ext["Erk", "PIP3"] <- 1L   # neuer Pfeil Erk → PIP3
+
+# (Optional: sanity-check, dass das noch ein DAG ist)
+g_ext <- igraph::graph_from_adjacency_matrix(amat_ext, mode = "directed")
+stopifnot(igraph::is_dag(g_ext))
+
+# 3) Daten aus ERWEITERTEM DAG simulieren (aber gleiche n wie echte Sachs-Daten)
+sim_ext <- simulate_linear_from_dag(
+  amat_ext,
+  n      = nrow(dat_real),
+  seed   = 2025,
+  w_mean = 0.8,
+  w_sd   = 0.2,
+  noise_sd = 1.0
+)
+
+# 4) „Misspecified“-Test:
+#    Wir benutzen den ALTEN DAG (ohne Erk→PIP3),
+#    aber testen die CIs auf Daten aus dem ERWEITERTEN DAG.
+res_mismatch <- run_ci_tests(amat_base, sim_ext, tests = tests, alpha = alpha)
+viol_mismatch <- res_mismatch %>%
+  dplyr::filter(rejected) %>%
+  dplyr::arrange(adj.p.value)
+
+cat("\n--- Daten aus erweitertem DAG (Erk→PIP3), getestet mit ALTEM DAG ---\n")
+cat("Total CIs tested: ", nrow(res_mismatch), "\n")
+cat("Rejected after Holm @ alpha =", alpha, ":", nrow(viol_mismatch), "\n")
+
+if (nrow(viol_mismatch)) {
+  cat("\nTop rejections (mismatch scenario):\n")
+  print(
+    viol_mismatch %>%
+      dplyr::select(test, CI, adj.p.value) %>%
+      dplyr::slice_head(n = 10)
+  )
+} else {
+  cat("\nKeine CI wurde abgelehnt – eher unerwartet, ggf. andere Seeds / n versuchen.\n")
+}
+
+# 5) Helper: allgemeine Funktion, ob ein CI-String ein bestimmtes Paar (a,b) enthält
+#    CI-Format ist wie bei dir z.B. "X _||_ Y1+Y2 | Z1, Z2"
+involves_pair <- function(ci_str, a, b) {
+  parts <- strsplit(ci_str, " _\\|\\|_ ", perl = TRUE)[[1]]
+  if (length(parts) < 2) return(FALSE)
+  X <- trimws(parts[1])
+  Y <- trimws(strsplit(parts[2], "\\|", perl = TRUE)[[1]][1])  # Y-Teil vor dem "|"
+  s <- sort(c(X, Y))
+  identical(s, sort(c(a, b)))
+}
+
+# 6) Genau die abgelehnten CIs herausfiltern, die (Erk, PIP3) als Paar beinhalten
+viol_ErkPIP3 <- viol_mismatch %>%
+  dplyr::filter(vapply(CI, involves_pair, logical(1), a = "Erk", b = "PIP3")) %>%
+  dplyr::arrange(adj.p.value)
+
+cat("\nRejected CIs, die das Paar (Erk, PIP3) beinhalten:\n")
+if (nrow(viol_ErkPIP3)) {
+  print(
+    viol_ErkPIP3 %>%
+      dplyr::select(test, CI, adj.p.value)
+  )
+} else {
+  cat("(keine spezifischen (Erk, PIP3)-CIs unter den Rejections gefunden)\n")
+}
