@@ -975,75 +975,197 @@ print(added_tbl, n = nrow(added_tbl))
 ## if we can find the (Erk, PIP3) CI statement
 ################################################################################
 
-set.seed(2025)
 
-# 1) Basis-DAG und Beobachtungs-Anzahl wie zuvor
-amat_base <- get_sachs_amat()
-dat_real  <- read_sachs_observational(data_path)
+################################################################################
+## Make all implied CIs visible
+################################################################################
 
-# 2) Erweiterter DAG: zusätzlichen Pfeil Erk -> PIP3 einfügen
-amat_ext <- amat_base
-amat_ext["Erk", "PIP3"] <- 1L   # neuer Pfeil Erk → PIP3
-
-# (Optional: sanity-check, dass das noch ein DAG ist)
-g_ext <- igraph::graph_from_adjacency_matrix(amat_ext, mode = "directed")
-stopifnot(igraph::is_dag(g_ext))
-
-# 3) Daten aus ERWEITERTEM DAG simulieren (aber gleiche n wie echte Sachs-Daten)
-sim_ext <- simulate_linear_from_dag(
-  amat_ext,
-  n      = nrow(dat_real),
-  seed   = 2025,
-  w_mean = 0.8,
-  w_sd   = 0.2,
-  noise_sd = 1.0
-)
-
-# 4) „Misspecified“-Test:
-#    Wir benutzen den ALTEN DAG (ohne Erk→PIP3),
-#    aber testen die CIs auf Daten aus dem ERWEITERTEN DAG.
-res_mismatch <- run_ci_tests(amat_base, sim_ext, tests = tests, alpha = alpha)
-viol_mismatch <- res_mismatch %>%
-  dplyr::filter(rejected) %>%
-  dplyr::arrange(adj.p.value)
-
-cat("\n--- Daten aus erweitertem DAG (Erk→PIP3), getestet mit ALTEM DAG ---\n")
-cat("Total CIs tested: ", nrow(res_mismatch), "\n")
-cat("Rejected after Holm @ alpha =", alpha, ":", nrow(viol_mismatch), "\n")
-
-if (nrow(viol_mismatch)) {
-  cat("\nTop rejections (mismatch scenario):\n")
-  print(
-    viol_mismatch %>%
-      dplyr::select(test, CI, adj.p.value) %>%
-      dplyr::slice_head(n = 10)
+make_ci_table <- function(amat,
+                          include_empty = TRUE,
+                          max_Z_size    = NULL,
+                          minimal_only  = TRUE) {
+  cis_list <- enumerate_all_cis(
+    amat,
+    include_empty = include_empty,
+    max_Z_size    = max_Z_size,
+    minimal_only  = minimal_only
   )
-} else {
-  cat("\nKeine CI wurde abgelehnt – eher unerwartet, ggf. andere Seeds / n versuchen.\n")
+  
+  tibble::tibble(
+    ci_id = seq_along(cis_list),
+    X     = vapply(cis_list, function(ci) ci$X, character(1)),
+    Y     = vapply(cis_list, function(ci) ci$Y, character(1)),
+    Z_str = vapply(cis_list, function(ci) {
+      if (length(ci$Z)) paste(sort(ci$Z), collapse = ", ") else "∅"
+    }, character(1)),
+    # keep full object in case you need it later
+    ci_obj = cis_list
+  )
 }
 
-# 5) Helper: allgemeine Funktion, ob ein CI-String ein bestimmtes Paar (a,b) enthält
-#    CI-Format ist wie bei dir z.B. "X _||_ Y1+Y2 | Z1, Z2"
+
+
+# CI format from run_ci_tests_from_list:
+#   "X _||_ Y1+Y2 | Z1, Z2"   or   "X _||_ Y | ∅"
 involves_pair <- function(ci_str, a, b) {
   parts <- strsplit(ci_str, " _\\|\\|_ ", perl = TRUE)[[1]]
   if (length(parts) < 2) return(FALSE)
   X <- trimws(parts[1])
-  Y <- trimws(strsplit(parts[2], "\\|", perl = TRUE)[[1]][1])  # Y-Teil vor dem "|"
+  Y <- trimws(strsplit(parts[2], "\\|", perl = TRUE)[[1]][1])  # Y part before '|'
   s <- sort(c(X, Y))
   identical(s, sort(c(a, b)))
 }
 
-# 6) Genau die abgelehnten CIs herausfiltern, die (Erk, PIP3) als Paar beinhalten
-viol_ErkPIP3 <- viol_mismatch %>%
-  dplyr::filter(vapply(CI, involves_pair, logical(1), a = "Erk", b = "PIP3")) %>%
-  dplyr::arrange(adj.p.value)
 
-cat("\nRejected CIs, die das Paar (Erk, PIP3) beinhalten:\n")
-if (nrow(viol_ErkPIP3)) {
-  print(
-    viol_ErkPIP3 %>%
-      dplyr::select(test, CI, adj.p.value)
+
+################################################################################
+## 2) Main experiment function:
+##    - You manually choose X, Y, and direction ("X_to_Y" or "Y_to_X")
+##    - We add that edge to the DAG
+##    - Simulate data from modified DAG
+##    - Test ALL original CIs on this new data
+##    - Show which CIs involving (X, Y) are rejected
+################################################################################
+
+run_manual_edge_experiment <- function(amat_base,
+                                       dat_template,
+                                       X, Y,
+                                       direction = c("X_to_Y", "Y_to_X"),
+                                       tests = c("gcm", "pcm"),
+                                       alpha = 0.05,
+                                       sim_seed = 1234) {
+  direction <- match.arg(direction)
+  
+  stopifnot(all(rownames(amat_base) == colnames(amat_base)))
+  if (!(X %in% rownames(amat_base)) || !(Y %in% rownames(amat_base))) {
+    stop("X and Y must be node names in the DAG.")
+  }
+  
+  # Decide orientation
+  if (direction == "X_to_Y") {
+    from <- X; to <- Y
+  } else {
+    from <- Y; to <- X
+  }
+  
+  message("Chosen pair: (", X, ", ", Y, "), direction: ", from, " → ", to)
+  
+  # Check we don't already have an edge
+  if (amat_base[from, to] == 1L) {
+    stop("Edge ", from, " → ", to, " already exists in the base DAG.")
+  }
+  if (amat_base[to, from] == 1L) {
+    message("Note: there is already an edge ", to, " → ", from,
+            " in the base DAG. You are not changing that here.")
+  }
+  
+  # Build modified adjacency
+  amat_mod <- amat_base
+  amat_mod[from, to] <- 1L
+  
+  # Check acyclicity
+  g_mod <- igraph::graph_from_adjacency_matrix(amat_mod, mode = "directed")
+  if (!igraph::is_dag(g_mod)) {
+    stop("Adding edge ", from, " → ", to, " creates a cycle. Choose another direction or pair.")
+  }
+  
+  # Simulate data from modified DAG, same n as template data
+  n <- nrow(dat_template)
+  set.seed(sim_seed)
+  sim_dat <- simulate_linear_from_dag(
+    amat_mod,
+    n        = n,
+    seed     = sim_seed,
+    w_mean   = 0.8,
+    w_sd     = 0.2,
+    noise_sd = 1.0
   )
-} else {
-  cat("(keine spezifischen (Erk, PIP3)-CIs unter den Rejections gefunden)\n")
+  
+  # Enumerate ALL implied CIs from ORIGINAL DAG
+  cis_all_base <- enumerate_all_cis(
+    amat_base,
+    include_empty = TRUE,
+    max_Z_size    = NULL,
+    minimal_only  = TRUE
+  )
+  
+  # Test those CIs on data from MODIFIED DAG
+  res_mismatch <- run_ci_tests_from_list(
+    cis_list = cis_all_base,
+    dat      = sim_dat,
+    tests    = tests,
+    alpha    = alpha
+  )
+  
+  viol_mismatch <- res_mismatch %>%
+    dplyr::filter(rejected) %>%
+    dplyr::arrange(adj.p.value)
+  
+  cat("\n--- Data from MODIFIED DAG (", from, "→", to,
+      "), tested with ORIGINAL DAG CIs ---\n", sep = "")
+  cat("Total CIs tested: ", nrow(res_mismatch), "\n")
+  cat("Rejected after Holm @ alpha =", alpha, ":", nrow(viol_mismatch), "\n")
+  
+  if (nrow(viol_mismatch)) {
+    cat("\nTop 10 rejections:\n")
+    print(
+      viol_mismatch %>%
+        dplyr::select(test, CI, adj.p.value) %>%
+        dplyr::slice_head(n = 10)
+    )
+  } else {
+    cat("\nNo CI rejections.\n")
+  }
+  
+  # Focus specifically on CIs involving (X, Y)
+  viol_XY <- viol_mismatch %>%
+    dplyr::filter(vapply(CI, involves_pair, logical(1), a = X, b = Y)) %>%
+    dplyr::arrange(adj.p.value)
+  
+  cat("\nRejected CIs that involve (", X, ", ", Y, "):\n", sep = "")
+  if (nrow(viol_XY)) {
+    print(viol_XY %>% dplyr::select(test, CI, adj.p.value))
+  } else {
+    cat("(none for this pair)\n")
+  }
+  
+  invisible(list(
+    amat_mod        = amat_mod,
+    sim_data        = sim_dat,
+    all_results     = res_mismatch,
+    all_rejections  = viol_mismatch,
+    pair_rejections = viol_XY
+  ))
 }
+
+
+
+
+# 0) Base objects as usual
+amat_base <- get_sachs_amat()
+dat_real  <- read_sachs_observational(data_path)
+
+# 1) (Optional) Explore all CIs and choose one
+ci_tbl <- make_ci_table(amat_base)
+View(ci_tbl)  # or head(ci_tbl), or write_csv
+
+# Example: manually pick a pair
+X <- "Raf"
+Y <- "PIP3"
+
+# 2) Choose edge direction by hand:
+#    "X_to_Y" means Raf → PIP3, "Y_to_X" means PIP3 → Raf
+direction <- "X_to_Y"
+
+# 3) Run the experiment
+out <- run_manual_edge_experiment(
+  amat_base    = amat_base,
+  dat_template = dat_real,
+  X            = X,
+  Y            = Y,
+  direction    = direction,
+  tests        = tests,   # your c("gcm","pcm")
+  alpha        = alpha,   # your 0.05
+  sim_seed     = 2025
+)
+
