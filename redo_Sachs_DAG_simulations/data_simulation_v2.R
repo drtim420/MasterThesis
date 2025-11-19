@@ -1,5 +1,4 @@
 # ============================================================
-# 01_test_vs_sim_sachs.R
 # Test DAG vs REAL Sachs data: list rejected implied CIs
 # Simulate faithful data from the DAG and re-test same CIs
 #    
@@ -29,7 +28,7 @@ dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 # Sachs nodes taken from the Paper implementation of lukas kook
 nms <- c("Raf","Mek","PLCg","PIP2","PIP3","Erk","Akt","PKA","PKC","p38","JNK")
 
-# Sachs DAG 
+# <- Sachs DAG 
 get_sachs_amat <- function() {
   A <- matrix(c(
     0,0,0,0,0,0,0,1,1,0,0,
@@ -185,7 +184,7 @@ ensure_circular_coords <- function(dag,
 # now we want to highlight the CI pairs we test
 # Plot DAG + overlay tested CI pairs as red dashed chords
 plot_dag_with_tested_cis <- function(dag, cis_list,
-                                     title = "Sachs DAG — tested CIs (red, dashed)",
+                                     title = "Sachs DAG tested CIs",
                                      node_size = 11) {
   # Unique unordered tested pairs
   pair_key <- vapply(cis_list, function(ci) paste(sort(c(ci$X, ci$Y)), collapse = "||"), "")
@@ -267,7 +266,7 @@ str(dagitty::coordinates(dag_circ))  # should show numeric x,y (not logical NA)
 # Now overlay the CI chords:
 tcis <- cis_with_Z(amat)
 plot_dag_with_tested_cis(dag_circ, tcis,
-                         title = "Sachs DAG — tested CI pairs (red, dashed)")
+                         title = "Sachs DAG tested CI pairs")
 
 
 # Set robust circular coords (PIP2 at 12 o’clock; mirror to match your figure)
@@ -278,7 +277,7 @@ tcis <- cis_with_Z(amat)
 
 # Plot with red dashed CI chords
 plot_dag_with_tested_cis(dag_circ, tcis,
-                         title = "Sachs DAG — tested CI pairs (red, dashed)")
+                         title = "Sachs DAG tested CI pairs")
 
 
 str(dagitty::coordinates(dag_circ))   # should be data.frame with x,y for all nodes
@@ -390,9 +389,9 @@ if (nrow(viol_real)) {
 }
 
 cat("\n=== (B) SIMULATE faithful data from the SAME DAG ===\n")
-set.seed(999)
+set.seed(9)
 sim_dat <- simulate_linear_from_dag(
-  amat, n = nrow(dat_real), seed = 999,
+  amat, n = nrow(dat_real), seed = 9,
   w_mean = 0.8, w_sd = 0.2, noise_sd = 1.0
 )
 
@@ -535,8 +534,68 @@ sim_true <- simulate_linear_from_dag(amat, n = 1000, seed = 999,
 plot_sachs_paper_circle(dag_circ, order = paper_order, anchor = "PIP2",
                         mirror_y = TRUE, title = "Sachs graph (mirrored)")
 
-plot_sachs_with_edge_weights(dag_circ, edge_weights = sim_true$weights,
-                             title = "Sachs DAG with TRUE simulation weights")
+plot_sachs_with_edge_weights <- function(
+    dag,
+    edge_weights,
+    order  = c("PIP2","PLCg","Mek","Raf","JNK","p38","PKC","PKA","Akt","Erk","PIP3"),
+    anchor = "PIP2",
+    mirror_y = TRUE,
+    title  = "Sachs DAG with edge weights"
+){
+  stopifnot(setequal(order, names(dag)))
+  
+  # --- circular positions (same logic as in plot_sachs_paper_circle) ---
+  k <- length(order)
+  theta <- seq(0, 2*pi, length.out = k + 1)[1:k]; names(theta) <- order
+  theta <- theta + ((pi/2) - theta[anchor])
+  x <- cos(theta); y <- sin(theta); if (mirror_y) x <- -x
+  pos <- data.frame(name = order, x = as.numeric(x), y = as.numeric(y), row.names = order)
+  
+  # --- build igraph + join weights ---
+  el <- dagitty::edges(dag) |> as.data.frame()
+  colnames(el)[1:2] <- c("from", "to")
+  
+  # assume edge_weights is a matrix with rownames = from, colnames = to
+  ew_df <- as.data.frame(as.table(edge_weights))
+  colnames(ew_df) <- c("from", "to", "weight")
+  ew_df <- dplyr::filter(ew_df, weight != 0)
+  
+  el <- dplyr::left_join(el, ew_df, by = c("from", "to"))
+  
+  g <- igraph::graph_from_data_frame(
+    el,
+    directed = TRUE,
+    vertices = data.frame(name = order)
+  )
+  
+  # --- plot with ggraph; labels via geom_edge_link() ---
+  p <- ggraph::ggraph(g, layout = "manual", x = pos$x, y = pos$y) +
+    ggraph::geom_edge_link(
+      ggplot2::aes(
+        width = weight,
+        label = round(weight, 2)
+      ),
+      angle_calc    = "along",
+      label_dodge   = grid::unit(2, "mm"),
+      label_push    = grid::unit(1, "mm"),
+      check_overlap = TRUE,
+      lineend       = "round",
+      show.legend   = FALSE,
+      arrow   = grid::arrow(length = grid::unit(3, "mm"), type = "closed"),
+      end_cap = ggraph::circle(3.2, "mm")
+    ) +
+    ggraph::geom_node_point(size = 12, shape = 21, fill = "black", color = "black", stroke = 0) +
+    ggraph::geom_node_text(ggplot2::aes(label = name), color = "white", size = 3.8, fontface = "bold") +
+    ggplot2::scale_edge_width_continuous(range = c(0.3, 1.5)) +
+    ggplot2::coord_fixed() +
+    ggplot2::labs(title = title) +
+    ggplot2::theme_void(base_size = 12) +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0, face = "bold"))
+  
+  print(p)
+  invisible(p)
+}
+
 
 
 
