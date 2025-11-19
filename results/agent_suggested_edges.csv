@@ -1,0 +1,3 @@
+pair,X,Y,orientation,valid,n_rejected,delta_vs_base,recommendation
+JNK—p38,JNK,p38,JNK→p38,TRUE,0,-2,Markov equivalent (direction not identifiable)
+JNK—p38,JNK,p38,p38→JNK,TRUE,0,-2,Markov equivalent (direction not identifiable)

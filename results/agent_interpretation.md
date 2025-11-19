@@ -1,0 +1,5 @@
+- **Pass/Fail**: CI-consistency test passed; no falsified hypotheses.
+- **CIs Tested/Rejections**: 22 CIs tested for both gcm and pcm; 1 rejected for each.
+- **Critical Pairs**: JNK _||_ p38 | PKA, PKC (pcm), JNK _||_ p38 | PKA, PKC (gcm).
+- **Feasible Orientations**: JNK→p38 and p38→JNK are both valid but direction not identifiable.
+- **Caveat**: 'Not falsified' does not imply the graph is true; further validation needed.
