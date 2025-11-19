@@ -49,10 +49,10 @@ openai_chat_min <- function(system_msg, user_msg,
 
 
 
-# ---- LLM-based DAG proposal ----------------------------------------------
+# LLM-based DAG proposal 
 
 # Ask an LLM to propose a DAG given only the variable names.
-# Output: adjacency matrix amat (same format as get_sachs_amat()).
+# Output: adjacency matrix amat 
 propose_dag_from_llm <- function(vars,
                                  graph_name = "LLM DAG",
                                  model = Sys.getenv("OPENAI_MODEL", unset = "gpt-4o-mini"),
@@ -114,7 +114,7 @@ propose_dag_from_llm <- function(vars,
     A[parent, child] <- 1L
   }
   
-  # Optional: check acyclicity; if cyclic, warn but still return.
+  # check acyclicity; if cyclic, warn but still return.
   g <- igraph::graph_from_adjacency_matrix(A, mode = "directed")
   if (!igraph::is_dag(g)) {
     warning("LLM-proposed adjacency is not a DAG (contains cycles). ",
@@ -206,7 +206,7 @@ dat  <- read_sachs_observational("../data")
 vars <- colnames(dat)
 amat_llm <- propose_dag_from_llm(vars, graph_name = "LLM Sachs-like DAG")
 
-# Now run exactly the same pipeline as before, just with amat_llm
+# Now run exactly the same pipeline as before just with amat_llm
 out_llm <- dag_ci_agent(dat, amat_llm, alpha = 0.05, graph_name = "LLM Sachs DAG")
 
 cat("\n--- LLM-based DAG: CI Interpretation ---\n", out_llm$interpretation, "\n")

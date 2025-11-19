@@ -344,6 +344,7 @@ simulate_linear_from_dag <- function(amat, n, seed = 1,
   colnames(E) <- vars
   
   X <- matrix(0, n, length(vars)); colnames(X) <- vars
+  
   for (v in order) {
     parents <- vars[which(amat[, v] == 1L)]
     if (!length(parents)) {
