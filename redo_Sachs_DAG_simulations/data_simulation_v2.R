@@ -948,6 +948,28 @@ amat_drop <- amat_base
 amat_drop["Akt","Erk"] <- 0L
 amat_drop["Erk","Akt"] <- 0L
 
+
+# show the CI from old dag and new dag with the removed akt-erk edge
+
+
+  g <- adj2dag(amat_base)
+  cis_base <- dagitty::impliedConditionalIndependencies(g)
+  cis_base[vapply(cis, function(x) length(x$Z) > 0, logical(1))]
+
+
+  a <- adj2dag(amat_drop)
+  cis_drop <- dagitty::impliedConditionalIndependencies(a)
+  cis_drop[vapply(cis, function(x) length(x$Z) > 0, logical(1))]
+
+  added <- setdiff(cis_drop, cis_base)
+  removed <- setdiff(cis_base, cis_drop)
+  
+  added
+  removed
+  
+  
+  
+  
 # run test for CI's
 res_sim_base <- run_ci_tests(amat_base, sim_dat, tests = tests, alpha = alpha)
 res_sim_drop <- run_ci_tests(amat_drop, sim_dat, tests = tests, alpha = alpha)
