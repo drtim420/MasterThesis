@@ -248,26 +248,45 @@ dag_ci_agent <- function(dat, amat_llm,
     "<none>"
   }
   
-  # LLM prompt
+  ## ---- LLM explanation prompt: for clinicians + scientists ----
   sys_msg <- paste(
-    "You are a statistician explaining CI-tests for DAGs.",
-    "Output 4–6 short bullet points, no prose paragraphs.",
-    "Define 'falsified' := CI with Holm-adjusted p < alpha."
+    "You are a statistician and medical data scientist.",
+    "You explain results of conditional independence (CI) tests used to evaluate causal assumptions in biological or clinical datasets.",
+    "Your audience is medical professionals and researchers with basic statistical knowledge but not experts in causal inference.",
+    "",
+    "WRITE CLEARLY AND CONCISELY:",
+    "- Use 5–7 short bullet points.",
+    "- Avoid formulas and heavy notation.",
+    "- Prefer plain language, explain any technical term briefly.",
+    "",
+    "DEFINITIONS:",
+    "- A DAG (Directed Acyclic Graph) represents assumptions about cause-and-effect between variables (e.g. biomarkers, clinical factors).",
+    "- A CI test checks whether the data is compatible with the assumption that two variables are independent after adjusting for other variables.",
+    "- 'Falsified' means that evidence from the data contradicts the assumed independence (Holm-adjusted p < alpha).",
+    "",
+    "FOCUS ON:",
+    "1) Whether the DAG is broadly compatible with the data or clearly contradicted.",
+    "2) How many independence assumptions were tested and how many were rejected.",
+    "3) Which rejected assumptions are most important and what they might mean biologically or clinically.",
+    "4) A reminder that 'not falsified' does not prove that the DAG or causal story is correct.",
+    "5) Optional: suggest simple next steps (e.g. consider adding a link between specific nodes, revisit biological mechanism, or collect more data)."
   )
   
   usr_msg <- paste0(
-    "We tested whether the DAG '", graph_name, "' is consistent with data.\n",
-    sprintf("alpha = %.3f\n\n", alpha),
-    "Per-test summary (per CI test type):\n",
+    "We tested whether the DAG '", graph_name, "' is consistent with this dataset using CI tests.\n",
+    sprintf("Significance level alpha = %.3f.\n\n", alpha),
+    "Summary of CI tests per test type (number tested, number falsified, smallest adjusted p-value):\n",
     smry_txt, "\n\n",
-    "Rejected CI statements (Holm-adjusted p-values):\n",
+    "List of falsified independence assumptions (Holm-adjusted p-values):\n",
     rej_txt, "\n\n",
-    "Explain briefly:\n",
-    "1) Does the DAG pass or fail overall?\n",
-    "2) How many CIs were tested and rejected per test type?\n",
-    "3) Mention the most important 1–3 rejected CIs, if any.\n",
-    "4) Remind that 'not falsified' ≠ 'true graph'.\n"
+    "Please provide a short explanation in bullet points for clinicians and researchers.\n",
+    "Address:\n",
+    "- Does the proposed causal structure overall look acceptable or clearly inconsistent with the data?\n",
+    "- Roughly how many assumptions were checked and how many did not hold?\n",
+    "- Which 1–3 violated assumptions are most important and how might they change the biological or clinical interpretation?\n",
+    "- Remind that a non-falsified DAG is not necessarily the true causal graph, only that it is not contradicted by these tests.\n"
   )
+  
   
   interp <- openai_chat_min(sys_msg, usr_msg)
   
@@ -362,7 +381,7 @@ plot_dag_with_annotations <- function(amat_base,
                                       amat_testable = NULL,
                                       amat_new = NULL,
                                       main = "DAG",
-                                      layout_coords = NULL) {
+                                      layout = NULL) {
   vars <- rownames(amat_base)
   if (is.null(vars)) {
     stop("amat_base must have dimnames (variable names).")
@@ -388,7 +407,7 @@ plot_dag_with_annotations <- function(amat_base,
           for (eid in c(eid1, eid2)) {
             if (eid != 0) {
               E(g)[eid]$color <- "red"
-              E(g)[eid]$lty   <- 2
+              E(g)[eid]$lty   <- 2  # dashed
               E(g)[eid]$lwd   <- 2
             }
           }
@@ -397,7 +416,7 @@ plot_dag_with_annotations <- function(amat_base,
     }
   }
   
-  # 6.2 Add new “missing” edges in solid red
+  # 6.2 Add new “missing” edges in solid red (we treat them as undirected)
   if (!is.null(amat_new)) {
     for (i in seq_len(nrow(amat_new))) {
       for (j in seq_len(ncol(amat_new))) {
@@ -411,9 +430,9 @@ plot_dag_with_annotations <- function(amat_base,
     }
   }
   
-  # shared layout: if provided, use same coords as editor
-  if (!is.null(layout_coords)) {
-    lay <- layout_coords[igraph::V(g)$name, , drop = FALSE]
+  # unified layout: if given, use that, otherwise circle
+  if (!is.null(layout)) {
+    lay <- layout[igraph::V(g)$name, , drop = FALSE]
   } else {
     lay <- igraph::layout_in_circle(g)
   }
@@ -425,6 +444,7 @@ plot_dag_with_annotations <- function(amat_base,
        edge.arrow.size = 0.4,
        layout = lay)
 }
+
 
 
 ## ======================================================
@@ -513,14 +533,40 @@ ui <- fluidPage(
   )
 )
 
+
+adjacency_to_edges <- function(A) {
+  vars_row <- rownames(A)
+  vars_col <- colnames(A)
+  if (is.null(vars_row)) vars_row <- vars_col
+  if (is.null(vars_col)) vars_col <- vars_row
+  
+  idx <- which(A != 0, arr.ind = TRUE)
+  if (nrow(idx) == 0) {
+    return(data.frame(
+      from = character(0),
+      to   = character(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+  
+  data.frame(
+    from = vars_row[idx[, "row"]],
+    to   = vars_col[idx[, "col"]],
+    stringsAsFactors = FALSE
+  )
+}
+
+
+
+
+
 server <- function(input, output, session) {
   
-  # manual DAG edges from visNetwork
+  # Manual DAG edges from visNetwork
   rv_manual_edges <- reactiveVal(NULL)
   rv_layout       <- reactiveVal(NULL)   
   
-  
-  # adjacency matrix used for CI tests / plotting
+  # Adjacency matrix used for CI tests / plotting
   rv_amat <- reactiveVal(NULL)
   
   # CI results
@@ -528,70 +574,72 @@ server <- function(input, output, session) {
   rv_testable <- reactiveVal(NULL)
   rv_missing  <- reactiveVal(NULL)
   
-  ## ---- DATA ----
+  ## ---- DATA with auto header/sep detection ----
   dat <- reactive({
     req(input$datafile)
     ext  <- tools::file_ext(input$datafile$name)
     path <- input$datafile$datapath
     
+    # 1) Read data into df
     if (ext %in% c("xlsx", "xls")) {
-      # Excel: read with header, then make safe names
       df <- readxl::read_excel(path)
       df <- as.data.frame(df)
       colnames(df) <- make.names(colnames(df), unique = TRUE)
-      return(df)
-    }
-    
-    ## ---- auto-detect separator ----
-    line1 <- readLines(path, n = 1)
-    sep_candidates <- c("," , ";" , "\t")
-    counts <- vapply(
-      sep_candidates,
-      function(s) {
-        m <- gregexpr(s, line1, fixed = TRUE)[[1]]
-        if (identical(m, -1L)) 0L else length(m)
-      },
-      integer(1)
-    )
-    # default to comma if all zero
-    if (all(counts == 0)) {
-      sep <- ","
     } else {
-      sep <- sep_candidates[which.max(counts)]
+      # auto-detect separator from first line
+      line1 <- readLines(path, n = 1)
+      sep_candidates <- c("," , ";" , "\t")
+      counts <- vapply(
+        sep_candidates,
+        function(s) {
+          m <- gregexpr(s, line1, fixed = TRUE)[[1]]
+          if (identical(m, -1L)) 0L else length(m)
+        },
+        integer(1)
+      )
+      if (all(counts == 0)) {
+        sep <- ","
+      } else {
+        sep <- sep_candidates[which.max(counts)]
+      }
+      
+      # peek at first few rows to guess header
+      peek <- read.table(path,
+                         sep = sep,
+                         nrows = 5,
+                         header = FALSE,
+                         stringsAsFactors = FALSE,
+                         check.names = FALSE)
+      
+      row1 <- peek[1, , drop = TRUE]
+      row2 <- if (nrow(peek) >= 2) peek[2, , drop = TRUE] else NULL
+      
+      is_letter <- function(x) grepl("[A-Za-z]", x)
+      is_number <- function(x) suppressWarnings(!is.na(as.numeric(x)))
+      
+      has_letters_row1 <- any(sapply(row1, is_letter))
+      all_unique_row1  <- length(unique(as.character(row1))) == ncol(peek)
+      has_numbers_row2 <- !is.null(row2) && any(sapply(row2, is_number))
+      
+      header_guess <- has_letters_row1 && all_unique_row1 && has_numbers_row2
+      
+      df <- read.csv(path,
+                     header = header_guess,
+                     sep    = sep,
+                     check.names = TRUE)
     }
     
-    ## ---- quick peek to guess header ----
-    peek <- read.table(path,
-                       sep = sep,
-                       nrows = 5,
-                       header = FALSE,
-                       stringsAsFactors = FALSE,
-                       check.names = FALSE)
-    
-    row1 <- peek[1, , drop = TRUE]
-    row2 <- if (nrow(peek) >= 2) peek[2, , drop = TRUE] else NULL
-    
-    is_letter <- function(x) grepl("[A-Za-z]", x)
-    is_number <- function(x) suppressWarnings(!is.na(as.numeric(x)))
-    
-    has_letters_row1 <- any(sapply(row1, is_letter))
-    all_unique_row1  <- length(unique(as.character(row1))) == ncol(peek)
-    has_numbers_row2 <- !is.null(row2) && any(sapply(row2, is_number))
-    
-    header_guess <- has_letters_row1 && all_unique_row1 && has_numbers_row2
-    
-    ## ---- final read ----
-    df <- read.csv(path,
-                   header = header_guess,
-                   sep    = sep,
-                   check.names = TRUE)
-    # compute shared circular layout for these variables
+    # 2) Compute shared circular layout for ALL file types
     vars <- colnames(df)
-    g0 <- igraph::make_empty_graph(n = length(vars), directed = TRUE)
-    g0 <- igraph::set_vertex_attr(g0, "name", value = vars)
-    coords <- igraph::layout_in_circle(g0)
+    n <- length(vars)
+    
+    angles <- seq(from = pi/2,           # 12 o'clock
+                  by   = -2*pi/n,       # clockwise
+                  length.out = n)
+    coords <- cbind(x = cos(angles), y = sin(angles))
     rownames(coords) <- vars
     rv_layout(coords)
+    
     df
   })
   
@@ -615,11 +663,16 @@ server <- function(input, output, session) {
     vars   <- colnames(dat())
     coords <- rv_layout()
     
+    # scale coords so the circle is big enough in the canvas
+    coords_scaled <- coords * 300  # radius ~300
+    
     nodes <- data.frame(
-      id    = vars,
-      label = vars,
-      x     = coords[vars, 1],
-      y     = coords[vars, 2],
+      id      = vars,
+      label   = vars,
+      x       = coords_scaled[vars, "x"],
+      y       = coords_scaled[vars, "y"],
+      fixed   = TRUE,     # <- do not let visNetwork move them
+      physics = FALSE,    # <- no physics for these nodes
       stringsAsFactors = FALSE
     )
     
@@ -638,13 +691,12 @@ server <- function(input, output, session) {
     visNetwork(nodes, edges, height = "500px") %>%
       visEdges(arrows = "to") %>%
       visOptions(manipulation = TRUE,
-                 nodesIdSelection = TRUE) %>%
-      visPhysics(enabled = FALSE)   # keep fixed positions
+                 nodesIdSelection = TRUE)
   })
   
   
   
-  # keep track of edges the user draws / deletes
+  # Keep track of edges the user draws / deletes in the editor
   observe({
     edges <- input$dag_editor_edges
     if (!is.null(edges)) {
@@ -652,6 +704,30 @@ server <- function(input, output, session) {
     }
   })
   
+  # When user clicks "Kanten aus Editor übernehmen..."
+  observeEvent(input$btn_manual_apply, {
+    req(dat())
+    vars  <- colnames(dat())
+    edges <- rv_manual_edges()
+    
+    A <- matrix(0L, nrow = length(vars), ncol = length(vars),
+                dimnames = list(vars, vars))
+    
+    if (!is.null(edges) && nrow(edges) > 0) {
+      for (i in seq_len(nrow(edges))) {
+        from <- as.character(edges$from[i])
+        to   <- as.character(edges$to[i])
+        if (from %in% vars && to %in% vars && from != to) {
+          A[from, to] <- 1L
+        }
+      }
+    }
+    
+    rv_amat(A)
+    showNotification("Manuelle DAG-Kanten übernommen.", type = "message")
+  })
+  
+  ## ---- LLM DAG proposal (and load into editor) ----
   observeEvent(input$btn_llm_dag, {
     req(dat())
     vars <- colnames(dat())
@@ -663,43 +739,30 @@ server <- function(input, output, session) {
     # store DAG for CI tests
     rv_amat(A)
     
-    # convert adjacency to edge list for the editor
+    # edges for manual editor
     edges_llm <- adjacency_to_edges(A)
     rv_manual_edges(edges_llm)
     
-    # switch UI to manual editor so user sees & can edit the LLM DAG
+    # switch UI to manual editor so user can edit
     updateRadioButtons(session, "dag_source", selected = "manual")
     
     showNotification("LLM-DAG erstellt und in den Editor geladen.", type = "message")
   })
   
-  
-  ## ---- LLM DAG proposal ----
-  observeEvent(input$btn_llm_dag, {
-    req(dat())
-    vars <- colnames(dat())
-    A <- propose_dag_from_llm(vars,
-                              expert_text = input$expert_text,
-                              graph_name = "LLM DAG")
-    rv_amat(A)
-    showNotification("LLM-DAG erstellt.", type = "message")
-  })
-  
   ## ---- Upload adjacency matrix ----
   observeEvent(input$btn_upload_dag, {
-    req(input$amat_file)
+    req(input$amat_file, dat())
     amat_raw <- as.matrix(read.csv(input$amat_file$datapath,
-                                   row.names = 1, check.names = FALSE))
+                                   row.names = 1,
+                                   check.names = FALSE))
     
     if (nrow(amat_raw) != ncol(amat_raw)) {
       showNotification("Adjazenzmatrix ist nicht quadratisch.", type = "error")
       return()
     }
     
-    # check that names of adjacency matrix match the data columns
     data_vars <- colnames(dat())
     A_vars    <- rownames(amat_raw)
-    
     missing_in_data <- setdiff(A_vars, data_vars)
     if (length(missing_in_data) > 0) {
       showNotification(
@@ -711,7 +774,12 @@ server <- function(input, output, session) {
     }
     
     rv_amat(amat_raw)
-    showNotification("Adjazenzmatrix geladen.", type = "message")
+    
+    # also load into manual editor
+    rv_manual_edges(adjacency_to_edges(amat_raw))
+    updateRadioButtons(session, "dag_source", selected = "manual")
+    
+    showNotification("Adjazenzmatrix geladen und in den Editor übernommen.", type = "message")
   })
   
   ## ---- CI-tests ----
@@ -719,7 +787,6 @@ server <- function(input, output, session) {
     req(dat(), rv_amat())
     A <- rv_amat()
     
-    # sanity check: adjacency matrix must match data columns
     data_vars <- colnames(dat())
     A_vars    <- rownames(A)
     if (is.null(A_vars)) A_vars <- colnames(A)
@@ -750,30 +817,6 @@ server <- function(input, output, session) {
     A_missing <- infer_missing_edges_from_ci(out$raw_results, vars)
     rv_missing(A_missing)
   })
-  
-  adjacency_to_edges <- function(A) {
-    # A: adjacency matrix with dimnames = variable names
-    vars_row <- rownames(A)
-    vars_col <- colnames(A)
-    if (is.null(vars_row)) vars_row <- vars_col
-    if (is.null(vars_col)) vars_col <- vars_row
-    
-    idx <- which(A != 0, arr.ind = TRUE)
-    if (nrow(idx) == 0) {
-      return(data.frame(
-        from = character(0),
-        to   = character(0),
-        stringsAsFactors = FALSE
-      ))
-    }
-    
-    data.frame(
-      from = vars_row[idx[, "row"]],
-      to   = vars_col[idx[, "col"]],
-      stringsAsFactors = FALSE
-    )
-  }
-  
   
   ## ---- Consistency message ----
   output$consistency_msg <- renderPrint({
@@ -810,22 +853,37 @@ server <- function(input, output, session) {
   })
   
   output$dag_plot <- renderPlot({
-    req(rv_amat(), rv_layout())
-    A_base    <- rv_amat()
+    req(dat(), rv_layout())
+    coords <- rv_layout()
+    
+    # if no DAG yet, show empty graph with all variables
+    A_base <- rv_amat()
+    if (is.null(A_base)) {
+      vars <- colnames(dat())
+      A_base <- matrix(0L, nrow = length(vars), ncol = length(vars),
+                       dimnames = list(vars, vars))
+    }
+    
     A_testable <- rv_testable()
     A_missing  <- rv_missing()
-    coords     <- rv_layout()
+    
+    vars <- rownames(A_base)
+    if (is.null(vars)) vars <- colnames(A_base)
+    
+    layout_mat <- coords[vars, , drop = FALSE]
     
     plot_dag_with_annotations(
       amat_base     = A_base,
       amat_testable = A_testable,
       amat_new      = A_missing,
       main          = "Hypothesized DAG mit getesteten/fehlenden Verbindungen",
-      layout_coords = coords
+      layout        = layout_mat
     )
   })
   
+  
 }
+
 
 
 shinyApp(ui, server)
