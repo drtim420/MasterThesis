@@ -7,10 +7,22 @@ library(dplyr)
 library(igraph)
 library(httr2)
 library(visNetwork)
-
+library(comets)
+library(dagitty)
+library(shinybusy)
 ## ======================================================
 ## 1) OpenAI helper
 ## ======================================================
+
+library(dotenv)
+
+# Load .env from project root
+if (file.exists(".env")) {
+  dotenv::load_dot_env(".env")
+}
+
+
+# OpenAI helper 
 
 .have_key <- function(var = "OPENAI_API_KEY") {
   nzchar(Sys.getenv(var, unset = ""))
@@ -46,13 +58,15 @@ openai_chat_min <- function(system_msg, user_msg,
   
   content <- j$choices[[1]]$message$content
   if (is.list(content)) {
-    # handle "content blocks"
+    # handle "content blocks" if API ever returns them
     content <- paste(vapply(content, function(part) {
       if (!is.null(part$text)) part$text else if (!is.null(part$content)) part$content else ""
     }, character(1)), collapse = "")
   }
   as.character(content)
 }
+
+ 
 
 circle_layout <- function(vars, order, radius = 300) {
   angle_step <- 2*pi / length(order)
@@ -303,23 +317,38 @@ dag_ci_agent <- function(dat, amat_llm,
 ## 4) Helper: parse CI strings → (X, Y)
 ## ======================================================
 
-# parse a CI string like "Akt ⟂ Erk | Mek,PKC"
 parse_ci_pair <- function(ci_str) {
-  # allow various separators: "⟂", "_||_", etc.
-  # first split off conditioning set
-  parts <- strsplit(ci_str, "\\|", fixed = FALSE)[[1]]
-  main  <- trimws(parts[1])
+  if (is.null(ci_str) || is.na(ci_str) || !nzchar(ci_str)) {
+    return(c(NA_character_, NA_character_))
+  }
   
-  # replace common independence symbols with a unified one
-  main <- gsub("_*\\|_*", "⟂", main)
-  main <- gsub("⟂⟂", "⟂", main)  # just in case
+  # 1) Normalise independence symbols first
+  #    so that we don't cut inside "_||_"
+  main <- trimws(ci_str)
+  main <- gsub("_\\|\\|_", "⟂", main)   # "A _||_ B"
+  main <- gsub("\\|\\|",   "⟂", main)   # "A || B"
+  main <- gsub("⫫",       "⟂", main)   # unicode independence
+  main <- gsub("⟂⟂",      "⟂", main)   # just in case
   
-  mparts <- strsplit(main, "⟂", fixed = TRUE)[[1]]
-  if (length(mparts) < 2) return(c(NA_character_, NA_character_))
-  X <- trimws(mparts[1])
-  Y <- trimws(mparts[2])
-  c(X, Y)
+  # 2) Now remove the conditioning set:
+  #    everything starting with a " |"
+  #    e.g. "A ⟂ B | Z,W" -> "A ⟂ B"
+  main <- sub("\\s*\\|.*$", "", main)
+  main <- trimws(main)
+  
+  # 3) Split on the unified separator
+  parts <- strsplit(main, "⟂", fixed = TRUE)[[1]]
+  parts <- trimws(parts)
+  
+  if (length(parts) < 2) {
+    return(c(NA_character_, NA_character_))
+  }
+  
+  c(parts[1], parts[2])
 }
+
+
+
 
 ## ======================================================
 ## 5) Build matrices:
@@ -390,60 +419,84 @@ plot_dag_with_annotations <- function(amat_base,
   # base directed graph
   g <- igraph::graph_from_adjacency_matrix(amat_base, mode = "directed")
   
-  # Default aesthetics
+  # Default aesthetics for DAG edges
   E(g)$color <- "black"
   E(g)$lty   <- 1
   E(g)$lwd   <- 1
   
-  # 6.1 Mark edges that correspond to ICs that were testable (red dashed)
-  if (!is.null(amat_testable)) {
-    for (i in seq_len(nrow(amat_testable))) {
-      for (j in seq_len(ncol(amat_testable))) {
-        if (amat_testable[i, j] == 1L) {
-          v1 <- rownames(amat_testable)[i]
-          v2 <- colnames(amat_testable)[j]
-          eid1 <- igraph::get.edge.ids(g, c(v1, v2))
-          eid2 <- igraph::get.edge.ids(g, c(v2, v1))
-          for (eid in c(eid1, eid2)) {
-            if (eid != 0) {
-              E(g)[eid]$color <- "red"
-              E(g)[eid]$lty   <- 2  # dashed
-              E(g)[eid]$lwd   <- 2
-            }
+  ## 1) Add new “missing” edges in solid red (from rejected CIs)
+  if (!is.null(amat_new)) {
+    for (i in seq_len(nrow(amat_new))) {
+      for (j in seq_len(ncol(amat_new))) {
+        if (amat_new[i, j] == 1L &&
+            amat_base[i, j] == 0L && amat_base[j, i] == 0L) {
+          v1 <- rownames(amat_new)[i]
+          v2 <- colnames(amat_new)[j]
+          if (v1 %in% vars && v2 %in% vars) {
+            g <- igraph::add_edges(
+              g, c(v1, v2),
+              color = "red", lty = 1, lwd = 3
+            )
           }
         }
       }
     }
   }
   
-  # 6.2 Add new “missing” edges in solid red (we treat them as undirected)
-  if (!is.null(amat_new)) {
-    for (i in seq_len(nrow(amat_new))) {
-      for (j in seq_len(ncol(amat_new))) {
-        if (amat_new[i, j] == 1L && amat_base[i, j] == 0L && amat_base[j, i] == 0L) {
-          v1 <- rownames(amat_new)[i]
-          v2 <- colnames(amat_new)[j]
-          g <- igraph::add_edges(g, c(v1, v2),
-                                 color = "red", lty = 1, lwd = 3)
-        }
-      }
-    }
-  }
-  
-  # unified layout: if given, use that, otherwise circle
+  ## 2) Layout (shared with Shiny via rv_layout)
   if (!is.null(layout)) {
     lay <- layout[igraph::V(g)$name, , drop = FALSE]
   } else {
     lay <- igraph::layout_in_circle(g)
   }
   
-  plot(g,
-       main = main,
-       vertex.label.cex = 1.1,
-       vertex.size = 25,
-       edge.arrow.size = 0.4,
-       layout = lay)
+  # we control scaling ourselves so we can overlay segments()
+  xlim <- range(lay[, 1]) * 1.2
+  ylim <- range(lay[, 2]) * 1.2
+  
+  plot(
+    g,
+    main            = main,
+    vertex.label.cex = 1.1,
+    vertex.size      = 25,
+    edge.arrow.size  = 0.4,
+    layout           = lay,
+    rescale          = FALSE,
+    xlim             = xlim,
+    ylim             = ylim
+  )
+  
+  ## 3) Overlay CI pairs as red dotted lines (undirected)
+  if (!is.null(amat_testable)) {
+    ci_vars <- rownames(amat_testable)
+    if (is.null(ci_vars)) ci_vars <- colnames(amat_testable)
+    
+    for (i in seq_len(nrow(amat_testable))) {
+      for (j in seq_len(ncol(amat_testable))) {
+        if (i < j && amat_testable[i, j] == 1L) {
+          v1 <- rownames(amat_testable)[i]
+          v2 <- colnames(amat_testable)[j]
+          
+          if (v1 %in% vars && v2 %in% vars) {
+            idx1 <- match(v1, vars)
+            idx2 <- match(v2, vars)
+            # draw an undirected dotted red line between the two nodes
+            segments(
+              x0 = lay[idx1, 1],
+              y0 = lay[idx1, 2],
+              x1 = lay[idx2, 1],
+              y1 = lay[idx2, 2],
+              col = "red",
+              lty = 3,     # dotted
+              lwd = 2
+            )
+          }
+        }
+      }
+    }
+  }
 }
+
 
 
 
@@ -453,6 +506,40 @@ plot_dag_with_annotations <- function(amat_base,
 
 ui <- fluidPage(
   titlePanel("DAG–CI Agent"),
+  tags$head(
+    tags$style(HTML("
+    #llm_interpretation {
+      white-space: pre-wrap;   /* allow wrapped lines */
+      overflow: visible !important;
+      height: auto !important;
+      max-height: none !important;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+  "))
+  ),
+  add_busy_spinner(
+    spin = "fading-circle",   # type of spinner
+    position = "top-right",   # or "top-left", "top-center"
+    margins = c(10, 10),
+    timeout = 100             # ms delay before it shows
+  ),
+  tags$head(
+    tags$style(HTML("
+    #llm_interpretation {
+      white-space: pre-wrap;
+      overflow: visible !important;
+      height: auto !important;
+      max-height: none !important;
+      font-size: 16px;
+      line-height: 1.4;
+      border: 1px solid #ccc;
+      padding: 12px;
+      background-color: #fafafa;
+      border-radius: 6px;
+    }
+  "))
+  ),
   
   sidebarLayout(
     sidebarPanel(
@@ -523,12 +610,25 @@ ui <- fluidPage(
       h4("Zusammenfassung CI-Tests"),
       tableOutput("tbl_summary"),
       
+     
+      
+    
+      
+      hr(),
+      
+      
       h4("Abgelehnte ICs (Top 10)"),
       tableOutput("tbl_rejected"),
       
       hr(),
+      h4("DAG mit verworfenen CIs"),
+      plotOutput("dag_ci_plot", height = "500px"),   
+      
+      hr(),
       h4("LLM-Erklärung"),
       verbatimTextOutput("llm_interpretation")
+      
+      
     )
   )
 )
@@ -852,11 +952,12 @@ server <- function(input, output, session) {
     if (is.null(ci$interpretation)) "" else ci$interpretation
   })
   
+  ## ---- DAG-Plot: nur Hypothesen-DAG ----
   output$dag_plot <- renderPlot({
     req(dat(), rv_layout())
     coords <- rv_layout()
     
-    # if no DAG yet, show empty graph with all variables
+    # Basis-DAG: falls noch keiner gesetzt ist, leerer Graph mit allen Variablen
     A_base <- rv_amat()
     if (is.null(A_base)) {
       vars <- colnames(dat())
@@ -864,22 +965,113 @@ server <- function(input, output, session) {
                        dimnames = list(vars, vars))
     }
     
-    A_testable <- rv_testable()
-    A_missing  <- rv_missing()
-    
     vars <- rownames(A_base)
     if (is.null(vars)) vars <- colnames(A_base)
     
     layout_mat <- coords[vars, , drop = FALSE]
     
+    # keine CI-Information markieren – nur der DAG selbst
     plot_dag_with_annotations(
       amat_base     = A_base,
-      amat_testable = A_testable,
-      amat_new      = A_missing,
-      main          = "Hypothesized DAG mit getesteten/fehlenden Verbindungen",
+      amat_testable = NULL,
+      amat_new      = NULL,
+      main          = "Hypothesized DAG",
       layout        = layout_mat
     )
   })
+  
+  
+  
+  
+  
+  
+  ## ---- DAG-Plot mit verworfenen CIs (rot gestrichelt) ----
+  output$dag_ci_plot <- renderPlot({
+    req(dat(), rv_layout(), rv_ci())
+    
+    A_base <- rv_amat()
+    if (is.null(A_base)) return(invisible(NULL))
+    
+    coords <- rv_layout()
+    
+    # DAG-Knotennamen
+    vars <- rownames(A_base)
+    if (is.null(vars)) vars <- colnames(A_base)
+    layout_mat <- coords[vars, , drop = FALSE]
+    
+    # Hilfsfunktion: Namen kanonisieren (gleicher Raum für DAG & CI-Strings)
+    canon <- function(x) {
+      x <- tolower(x)
+      x <- sub("_(ll|ul)$", "", x)     # z.B. PIP2_ll -> pip2
+      x <- gsub("[^a-z0-9]", "", x)    # entferne Sonderzeichen, Punkte, Slash etc.
+      x
+    }
+    
+    canon_vars  <- canon(vars)
+    name_map    <- setNames(vars, canon_vars)  # canon -> original Name
+    
+    # 1) Basis-DAG zeichnen
+    g <- igraph::graph_from_adjacency_matrix(A_base, mode = "directed")
+    
+    xlim <- range(layout_mat[, 1]) * 1.2
+    ylim <- range(layout_mat[, 2]) * 1.2
+    
+    plot(
+      g,
+      main             = "DAG mit verworfenen CIs (rot gestrichelt)",
+      vertex.label.cex = 1.1,
+      vertex.size      = 25,
+      edge.arrow.size  = 0.4,
+      layout           = layout_mat,
+      rescale          = FALSE,
+      xlim             = xlim,
+      ylim             = ylim
+    )
+    
+    # 2) Verworfene CIs als rote gestrichelte Linien überlagern
+    out  <- rv_ci()
+    rejs <- out$rejected
+    if (is.null(rejs) || nrow(rejs) == 0) return(invisible(NULL))
+    
+    # optional: debug in Konsole sehen
+    message("Anzahl verworfene CIs: ", nrow(rejs))
+    
+    for (k in seq_len(nrow(rejs))) {
+      ci_str <- as.character(rejs$CI[k])
+      pair   <- parse_ci_pair(ci_str)
+      X_raw  <- pair[1]
+      Y_raw  <- pair[2]
+      
+      if (is.na(X_raw) || is.na(Y_raw)) next
+      
+      # auf kanonische Form bringen
+      Xc <- canon(X_raw)
+      Yc <- canon(Y_raw)
+      
+      if (!(Xc %in% names(name_map) && Yc %in% names(name_map))) {
+        next
+      }
+      
+      X <- name_map[[Xc]]
+      Y <- name_map[[Yc]]
+      
+      i <- match(X, vars)
+      j <- match(Y, vars)
+      if (is.na(i) || is.na(j)) next
+      
+      segments(
+        x0 = layout_mat[i, 1],
+        y0 = layout_mat[i, 2],
+        x1 = layout_mat[j, 1],
+        y1 = layout_mat[j, 2],
+        col = "red",
+        lty = 3,   # dotted
+        lwd = 3
+      )
+    }
+  })
+  
+  
   
   
 }
